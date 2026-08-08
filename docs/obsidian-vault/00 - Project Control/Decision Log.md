@@ -5,10 +5,10 @@
 
 This log records all significant decisions made during the project. Each entry links to the relevant Architecture Decision Record (ADR) when applicable.
 
-| # | Date | Decision | Rationale | ADR |
-|---|---|---|---|---|
-| 001 | 2026-07-27 | Adopt documentation-first approach | Ensure thorough understanding before implementation | TBD |
-| 002 | 2026-07-27 | Use Obsidian vault for project knowledge | Structured Markdown with linking and diagram support | TBD |
+| #   | Date       | Decision                                           | Rationale                                                     | ADR |
+| --- | ---------- | -------------------------------------------------- | ------------------------------------------------------------- | --- |
+| 001 | 2026-07-27 | Adopt documentation-first approach                 | Ensure thorough understanding before implementation           | TBD |
+| 002 | 2026-07-27 | Use Obsidian vault for project knowledge           | Structured Markdown with linking and diagram support          | TBD |
 | 003 | 2026-07-27 | Phase 0 focuses exclusively on research and design | Reduce risk of premature technology or implementation choices | TBD |
 
 ## Proposed Decisions (Under Discussion)

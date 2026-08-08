@@ -1,24 +1,24 @@
 {
   "main": {
-    "id": "efbc5b7d3ae81c8a",
+    "id": "b20b8a9232271345",
     "type": "split",
     "children": [
       {
-        "id": "3a49f90c9ed00b9c",
+        "id": "a7e592c460dd1f66",
         "type": "tabs",
         "children": [
           {
-            "id": "8f9f4e5f12f0590d",
+            "id": "ea80dd9bacbe703d",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "01 - Domain Research/Domain Overview.md",
+                "file": "docs/obsidian-vault/00 - Project Control/Project Overview.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Domain Overview"
+              "title": "Project Overview"
             }
           }
         ]
@@ -27,28 +27,30 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "150494af40b61891",
+    "id": "d22f8647add3fdd9",
     "type": "split",
     "children": [
       {
-        "id": "b8bc049ec512bc60",
+        "id": "c6203f8e24d82754",
         "type": "tabs",
         "children": [
           {
-            "id": "c327ad41c508bcbc",
+            "id": "b7d9208d480d8b42",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
             }
           },
           {
-            "id": "554db69f417646cd",
+            "id": "acd3a0d13e9b63b8",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -65,36 +67,39 @@
             }
           },
           {
-            "id": "f99ec7d97640fa18",
+            "id": "58161d89f48d616c",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {},
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
               "icon": "lucide-bookmark",
               "title": "Bookmarks"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
     "width": 300
   },
   "right": {
-    "id": "ddd6a880d6a6a424",
+    "id": "6a657e4c290dfc7a",
     "type": "split",
     "children": [
       {
-        "id": "eb1bc1a02a79c1f9",
+        "id": "7ef6618d538dff7d",
         "type": "tabs",
         "children": [
           {
-            "id": "e3fab38881ba40de",
+            "id": "1d0775d7dae5070a",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
+                "file": "docs/obsidian-vault/00 - Project Control/Project Overview.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -108,11 +113,12 @@
             }
           },
           {
-            "id": "4a6381a29e1f64ed",
+            "id": "5c8429b51c8e7b57",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "docs/obsidian-vault/00 - Project Control/Project Overview.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -121,7 +127,7 @@
             }
           },
           {
-            "id": "c6e8d0229781541e",
+            "id": "1657f459617cd0d2",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -136,7 +142,7 @@
             }
           },
           {
-            "id": "5fe95c7e3fe983c8",
+            "id": "6141fe3955d0030c",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -150,11 +156,12 @@
             }
           },
           {
-            "id": "90a76dcae786f62c",
+            "id": "94346b8e1c242502",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
+                "file": "docs/obsidian-vault/00 - Project Control/Project Overview.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -178,23 +185,25 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "bases:Create new base": false,
+      "audio-recorder:Start/stop recording": false
     }
   },
-  "active": "554db69f417646cd",
+  "active": "ea80dd9bacbe703d",
   "lastOpenFiles": [
-    "03 - Requirements/Land Rent Template Analysis.md",
-    "03 - Requirements/SRS/SRS v0.1.md",
-    "03 - Requirements/SRS/SRS.md",
-    "01 - Domain Research/Domain Overview.md",
-    "03 - Requirements/SRS.md",
-    "01 - Domain Research/Domain Expert Interview - Land Rent.md",
-    "00 - Project Control/Project Roadmap.md",
-    "nepal-land-document-assistant/Welcome.md",
-    "00 - Project Control/Project Overview.md",
-    "00 - Project Control/Project Glossary.md",
-    "00 - Project Control/Open Questions.md",
-    "00 - Project Control/Decision Log.md",
-    "99 - Attachments/Reference Documents/Land Rent - WIP.pdf"
+    "docs/obsidian-vault/03 - Requirements/Functional Requirements/Functional Requirements.md",
+    "docs/obsidian-vault/03 - Requirements/Data Needs.md",
+    "docs/obsidian-vault/02 - Document Analysis/Land Rent Template Analysis.md",
+    "docs/obsidian-vault/03 - Requirements/Non-Functional Requirements/Non-Functional Requirements.md",
+    "docs/obsidian-vault/03 - Requirements/SRS/SRS.md",
+    "docs/obsidian-vault/03 - Requirements/Use Cases.md",
+    "docs/obsidian-vault/03 - Requirements/Business Rules/Business Rules.md",
+    "docs/obsidian-vault/01 - Domain Research/Domain Overview.md",
+    "private/Interview/Domain Expert Interview - Land Rent.md",
+    "docs/obsidian-vault/00 - Project Control/Project Roadmap.md",
+    "docs/obsidian-vault/00 - Project Control/Project Overview.md",
+    "docs/obsidian-vault/00 - Project Control/Project Glossary.md",
+    "docs/obsidian-vault/00 - Project Control/Open Questions.md",
+    "docs/obsidian-vault/00 - Project Control/Decision Log.md"
   ]
 }
