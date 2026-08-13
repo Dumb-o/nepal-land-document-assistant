@@ -33,7 +33,9 @@ The application is conceived as a mobile-first tool to assist users with land/pr
 - Land transfer documentation
 - Supporting property and identity documentation
 - Document preparation assistance
-- Document information extraction (from source document photographs)
+- Document information extraction (from source document photographs) — future enhancement, not prototype (Decision 009)
+
+> **Prototype scope (Decisions 009/010, 2026-08-13):** All three transaction types above remain **confirmed project scope**. The initial prototype covers only **LAND_RENT** — and, within that, **agricultural use purpose only** (Decision 010). Manual data entry is the **primary acquisition mechanism** for the prototype; source-document capture is an optional supporting capability, and OCR/extraction is a future enhancement required before full deployment (Decision 009). See [[../00 - Project Control/Decision Log|Decision Log]] Decisions 009/010.
 
 ### 2.2 Potential Scope
 
@@ -119,7 +121,7 @@ The following document types are relevant to the project's intended use cases. I
 | **Relevant Transaction Types** | Land rent / lease, house rent |
 | **Application Relevance** | High relevance. This is a core document type the system may assist in preparing. |
 | **Legal Threshold** | Written agreement mandatory when monthly rent exceeds NPR 20,000 (Section 386, Muluki Civil Code). Registration at Land Revenue Office required when annual rent exceeds NPR 500,000 or lease exceeds 10 years. |
-| **Witness Requirement** | Minimum two witnesses per party (Section 386, Muluki Civil Code) |
+| **Witness Requirement** | Minimum one witness per party, identified by name, age, and address (citizenship optional). Updated per project owner 2026-08-13; legal confirmation pending. |
 | **Source** | commonlaw.com.np, notarykathmandu.com, lawimperial.com |
 
 ### 3.6 Ghar Bato Sifaris (Ward Office Recommendation Letter)
@@ -191,7 +193,7 @@ A land or property lease is a contractual agreement where the owner (lessor) gra
 
 - **Lessor (Landlord / Property Owner)**: The legal owner of the property
 - **Lessee (Tenant)**: The person or entity renting the property
-- **Witnesses**: Minimum two per party (required by Section 386 of Muluki Civil Code)
+- **Witnesses**: Minimum one per party, recorded with name, age, and address (citizenship optional; confirmed with project owner 2026-08-13, legal confirmation pending)
 - **Notary / Advocate**: May be involved for notarisation of the agreement
 - **Ward Office**: For registration of the agreement
 - **Land Revenue Office (Malpot)**: For registration of high-value or long-term leases
@@ -200,7 +202,7 @@ A land or property lease is a contractual agreement where the owner (lessor) gra
 
 1. Parties negotiate terms (rent, duration, conditions)
 2. Agreement is drafted (may be done by parties, lawyer, or deed writer)
-3. Agreement is signed by both parties with witnesses (minimum two per party)
+3. Agreement is signed by both parties with witnesses (minimum one per party)
 4. Agreement is notarised (recommended for enforceability but not mandatory for all cases)
 5. Agreement is registered at Ward Office (recommended)
 6. Registration at Land Revenue Office if annual rent exceeds NPR 500,000 or lease exceeds 10 years
@@ -393,7 +395,7 @@ Legal-heir documents and relationship certificates are obtained from ward office
 | Stakeholder | Real-World Role | Application Relationship |
 |---|---|---|
 | **Family Members / Co-owners** | May have joint ownership or inheritance rights. Must consent to transactions. | Indirect stakeholders — their consent may be required within the workflow. The system may need to capture their information. |
-| **Witnesses** | Required to sign agreements (minimum two per party for rental agreements). | Indirect — the system may need to record witness details and make space for signatures. Not likely to be direct users. |
+| **Witnesses** | Required to sign agreements (minimum one per party for rental agreements; recorded with name, age, and address; citizenship optional). | Indirect — the system may need to record witness details and make space for signatures. Not likely to be direct users. |
 | **Lawyers / Legal Professionals** | Advise clients on property transactions, draft deeds, conduct due diligence. | Indirect — may use the system as a tool to organise documents. Could also be a channel partner. **Requires domain expert verification** on whether lawyers would adopt such a tool. |
 | **Document Writers (Lekhandas / Lekhapadhibyabasayi)** | Traditional document writers who draft deeds and agreements in Nepal. | Important indirect stakeholders. The system may partially or fully replace some of their current role in document preparation. Their role in land administration is noted in academic sources as not clearly defined under law. |
 | **Notary Public** | Notarises documents, verifies identities and signatures. | Indirect — processed documents may require notarisation. Partnership potential. |
@@ -515,7 +517,7 @@ Legal-heir documents and relationship certificates are obtained from ward office
 3. Draft lease agreement
    ├── Include: parties' details, property info, rent, duration, terms
    ├── Must be in writing if monthly rent > NPR 20,000
-   ├── Minimum 2 witnesses per party required
+   ├── Minimum 1 witness per party required (name, age, address; citizenship optional)
    └── [Requires Verification: Standard template vs. free-form drafting]
 
 4. Execute agreement

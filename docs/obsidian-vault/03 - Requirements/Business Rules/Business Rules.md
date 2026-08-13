@@ -136,7 +136,7 @@
 
 | ID | Candidate Rule | Why Verification Required | Validation Source | Status |
 |---|---|---|---|---|
-| BR-008 | A minimum of two witnesses per party is required for a valid lease agreement (per Muluki Civil Code Section 386). | Preliminary research; applicability not authoritatively confirmed. Template shows 1–3 witnesses total, not per party. | Nepali legal professional | [UNVERIFIED — CANDIDATE DOMAIN RULE] |
+| BR-008 | A minimum of one witness per party is required for a valid lease agreement. Witnesses are identified by name, age, and address; citizenship is optional. | Domain rule provided by the project owner (2026-08-13). Template shows 1–3 witness slots recorded with name/address/age. Legal confirmation pending. | Nepali legal professional | [UNVERIFIED — CANDIDATE DOMAIN RULE] |
 | BR-009 | Written agreement is mandatory when monthly rent exceeds NPR 20,000. | Interpretation/exceptions require verification. Template includes रु ५,५०० (below threshold). | Nepali legal professional | [UNVERIFIED — CANDIDATE DOMAIN RULE] |
 | BR-010 | Registration at Land Revenue Office is required when annual rent exceeds NPR 500,000 or lease exceeds 10 years. | Applicability to lease types requires verification. | Nepali legal professional | [UNVERIFIED — CANDIDATE DOMAIN RULE] |
 

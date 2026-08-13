@@ -435,7 +435,7 @@ The conceptual domains below map to Data Need groups. Each group's evidence and 
 #### DN-CASE-02 — Case status
 
 - **Domain:** Case
-- **Description:** Current lifecycle state. Minimum set retained: `Created`, `In Progress`, `Draft Generated`, `Under Review`, `Finalized`; the SRS additionally suggests `Data Collection`, `Verification`, `Archived/Closed` ([PROPOSED], FR-007). "In Progress" is the umbrella for data collection/verification activity.
+- **Description:** Current lifecycle state. Canonical set (aligned across artifacts 2026-08-13): `Created`, `In Progress`, `Draft Generated`, `Under Review`, `Finalized`, `Persistent`. "In Progress" is the umbrella for data collection/verification activity; the earlier SRS states `Data Collection`, `Verification`, `Archived/Closed` were removed from SRS FR-007.
 - **Purpose:** Track progress; control allowed transitions (e.g., generation, finalization).
 - **Source:** SYSTEM_GENERATED
 - **Applies To:** Each Case.
@@ -926,7 +926,7 @@ The conceptual domains below map to Data Need groups. Each group's evidence and 
 
 ### 4.11 DN-WIT — Witnesses
 
-> Witness is a **repeatable entity**: 1–3 witnesses observed (name, address, age). DN-WIT-01..09 preserve the three observed slots (WITNESS_1..3). Whether a legal minimum applies is [OPEN QUESTION] (BR-008 is [UNVERIFIED — CANDIDATE DOMAIN RULE]; template shows 1–3 total, not per party).
+> Witness is a **repeatable entity**: 1–3 witnesses observed (name, address, age). DN-WIT-01..09 preserve the three observed slots (WITNESS_1..3). Rule (BR-008, updated 2026-08-13): minimum **one witness per party**, identified by name, age, and address; citizenship optional. BR-008 remains [UNVERIFIED — CANDIDATE DOMAIN RULE] pending legal confirmation.
 
 #### DN-WIT-01 — Witness 1 name
 
@@ -1620,7 +1620,7 @@ The conceptual domains below map to Data Need groups. Each group's evidence and 
 - **Verification:** Not required.
 - **Used By:** FR-LR-033; UC-012.
 
-#### DN-LIFE-04 — Persist Finalized System Records
+#### DN-LIFE-04 — Persist Finalized Documents
 
 - **Domain:** Finalized Document / Case Lifecycle
 - **Description:** Finalized documents are immutable and non-editable; revisions create new versions/cases (SRS §10.7).
@@ -2058,7 +2058,7 @@ Every value in a Case carries one of the data states defined in §2.3 (NOT_PROVI
 
 ### 5.3 Case Lifecycle States
 
-Retained minimum set (DN-CASE-02): **Created → In Progress → Draft Generated → Under Review → Finalized** (→ Persistent). The SRS's finer-grained states (`Data Collection`, `Verification`, `Archived/Closed`) are [PROPOSED]; "In Progress" covers data collection and verification activity. Finalized cases persist for operational use (Decision 004).
+Retained minimum set (DN-CASE-02): **Created → In Progress → Draft Generated → Under Review → Finalized → Persistent**. SRS FR-007 was aligned to this set on 2026-08-13 (the earlier finer-grained states `Data Collection`, `Verification`, and `Archived/Closed` were removed). "In Progress" covers data collection and verification activity. Finalized cases persist for operational use (Decision 004).
 
 ---
 
@@ -2166,7 +2166,7 @@ Legend — **Status:** CONFIRMED / PROPOSED / TO BE VALIDATED / [UNRESOLVED]. `[
 | — | Lease start date (SRS §9.5) | Term | — | Implied "आजको मितिले" | — | — | C01 | [UNRESOLVED] (implied, not a field) |
 | — | Utility responsibilities (SRS §9.5) | Rent | — | Clause-level (C06) | — | — | C06 | [UNRESOLVED] (clause, not field) |
 | — | Party contact info (SRS §9.4) | Party | — | Not in template | — | — | — | [UNRESOLVED] (contradicts template — see §8.2) |
-| — | Witness citizenship number (SRS §9.4) | Witness | — | Not in template | — | — | — | [UNRESOLVED] (contradicts template — see §8.2) |
+| — | Witness citizenship number (SRS §9.4) | Witness | — | Not in template | — | — | — | **RESOLVED 2026-08-13** — optional per updated BR-008 (name/age/address sufficient; citizenship optional); no data need required |
 
 ### 7.2 Scenario Coverage (16 scenarios)
 
@@ -2258,7 +2258,7 @@ Per-field acquisition rules for every data need group. Columns: **Manual** = man
 | DN-RENT | FR-LR-014, FR-LR-015, FR-LR-018 | UC-007 | BR-021..026, BR-029 | §9.5 | CONFIRMED (escalation [TO BE VALIDATED]) |
 | DN-PAY | (none dedicated) | UC-007 | BR-036 | §9.5 | PROPOSED — [TRACEABILITY REQUIRED] (partial) |
 | DN-DOC | FR-LR-018, FR-LR-028, FR-LR-029 | UC-011, UC-013 | BR-019 | §9.9, §9.10, §9.11 | CONFIRMED |
-| DN-WIT | FR-LR-016 | UC-008 | BR-034 | §9.4 | PROPOSED — note: SRS §9.4 witness citizenship not in template (§8.2) |
+| DN-WIT | FR-LR-016 | UC-008 | BR-034 | §9.4 | PROPOSED — SRS §9.4 aligned 2026-08-13 (min 1 witness/party; name, age, address; citizenship optional) |
 | DN-WRI | FR-LR-016 | UC-008 | — | §9.4 | PROPOSED — [TRACEABILITY REQUIRED] for DN-WRI-02 |
 | DN-SRC | FR-009..012, FR-LR-101..104, FR-LR-061 | UC-004, UC-021 | BR-045, BR-046 | §9.6 | CONFIRMED |
 | DN-EXT | FR-LR-019..022 | UC-009, UC-010 | BR-014 | §9.7 | PROPOSED |
@@ -2277,7 +2277,7 @@ Per-field acquisition rules for every data need group. Columns: **Manual** = man
 | # | Source A | Source B | Issue | Handling |
 |---|---|---|---|---|
 | 1 | SRS §9.4: Lessor/Lessee include "contact" | Template Field Dictionary (§4.1) | No contact fields exist in the template | Flagged [UNRESOLVED] in §7.1; no SRS edit (out of scope); logged as open question OQ-DN-11 |
-| 2 | SRS §9.4: "Witnesses: ... citizenship number (at least two per party)" | Template: witnesses carry name/address/age only; 1–3 total | Template does not show witness citizenship numbers or per-party count; BR-008 already [UNVERIFIED — CANDIDATE DOMAIN RULE] | Flagged [UNRESOLVED] in §7.1; no SRS edit; logged as OQ-DN-12 |
+| 2 | ~~SRS §9.4: "Witnesses: ... citizenship number (at least two per party)"~~ | Template: witnesses carry name/address/age only; 1–3 total | **RESOLVED 2026-08-13** — SRS §9.4 and BR-008 aligned: minimum one witness per party; name, age, address; citizenship optional (project owner). Template supports 1–3 slots. | SRS §9.4 + BR-008 updated; OQ-DN-12 closed |
 | 3 | SRS §9.5: deposit amount, utility responsibilities as rental terms | Template: no deposit field; utilities are clause-level obligations (C06) | Deposit is not template-backed | Flagged [UNRESOLVED] in §7.1; logged as OQ-DN-13 |
 
 ---
@@ -2297,11 +2297,11 @@ Per-field acquisition rules for every data need group. Columns: **Manual** = man
 | OQ-DN-09 | What rules govern updating a Client's information after a Case has been finalized? | FR-LR-055..061 |
 | OQ-DN-10 | What is the exact retention, archival, backup, and deletion policy for finalized Cases and finalized documents? Finalized cases are intended to be retained indefinitely for operational use. | Decision 004; DN-LIFE-06 |
 | OQ-DN-11 | SRS §9.4 lists "contact" for parties; the template has no contact field. Should contact be added, or is the SRS entry to be trimmed? | §8.2 #1 |
-| OQ-DN-12 | SRS §9.4 lists witness citizenship numbers and "at least two witnesses per party"; the template records name/address/age and 1–3 total witnesses. Which is authoritative? | §8.2 #2; BR-008 |
+| OQ-DN-12 | ~~SRS §9.4 listed witness citizenship numbers and "at least two witnesses per party" vs the template's name/address/age, 1–3 total.~~ **RESOLVED 2026-08-13** — BR-008 updated: minimum one witness per party; name, age, address; citizenship optional. SRS §9.4 aligned. | §8.2 #2; BR-008 |
 | OQ-DN-13 | SRS §9.5 lists deposit amount and utility responsibilities as rental terms; the template has no deposit field and treats utilities as clause obligations. Should these be modeled as data needs or clause content? | §8.2 #3 |
 | OQ-DN-14 | Should multiple Second Party individuals be supported (repeatable Second Party)? First Party co-owners are observed; Second Party multiplicity is symmetric but unobserved. | §2.4 |
 | OQ-DN-15 | Are Bikram Sambat dates legally required, or are AD dates also acceptable? | OQ-TA-16; §8.3 Template Analysis |
-| OQ-DN-16 | What determines the number of witnesses? Is there a legal minimum? | OQ-TA-03, OQ-TA-14; BR-008 |
+| OQ-DN-16 | What determines the number of witnesses? Is there a legal minimum? | **Partial resolution 2026-08-13** — minimum one witness per party per BR-008 (candidate domain rule, pending legal confirmation). Template provides up to 3 witness slots. | OQ-TA-03, OQ-TA-14; BR-008 |
 | OQ-DN-17 | How is a person who has **no reusable Client record and no source document** represented? Options: (a) a Client record created with manually entered data and zero source documents; (b) a case-scoped Party with no Client record and no document; (c) another concept. The requirements do not auto-resolve this; the choice affects Client reuse, source-document association (OQ-DN-08), and long-term storage. Must not mean "person cannot be represented." | §2.7; DN-CLI, DN-PTY-02; FR-LR-058..061 |
 
 ---

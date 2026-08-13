@@ -125,12 +125,13 @@ Where data is transmitted between system components or devices, the system shall
 **Status:** OPEN QUESTION
 
 **Rationale:**
-Transmission protection depends on the deployment model (online / offline / hybrid), which is not yet decided.
+Transmission protection depends on the deployment model (online / offline / hybrid), which is not yet decided. This requirement also covers **personal information** during transfer (privacy); it is the merged disposition of the former NFR-PRI-003 (merged 2026-08-13, see §6).
 
 **Verification Method:** Analysis
 
 **Acceptance Criteria:**
 - If any remote transmission occurs, it is protected against interception.
+- If transfer occurs, personal information is protected.
 - This requirement is subject to the deployment-model decision.
 
 ---
@@ -199,30 +200,16 @@ Client records (names, lineage, addresses, citizenship numbers) and client-provi
 
 ---
 
-### NFR-PRI-003 — Protect Information During Transfer (Privacy)
+### NFR-PRI-003 — Protect Information During Transfer (Privacy) — ~~MERGED~~
 
-**Requirement:**
-The system shall protect personal information during transfer wherever transfer occurs.
-
-**Priority:** SHOULD
-
-**Status:** OPEN QUESTION
-
-**Rationale:**
-Duplicates NFR-SEC-004 from a privacy perspective; both depend on the unresolved deployment model.
-
-**Verification Method:** Analysis
-
-**Acceptance Criteria:**
-- If transfer occurs, personal information is protected.
-- Resolved by the deployment-model decision.
+> **MERGED into NFR-SEC-004 (2026-08-13).** This ID is retained for traceability only; the requirement and its privacy wording now live in NFR-SEC-004. See §6 (Duplicate/Overlapping Requirements).
 
 ---
 
 ### NFR-PRI-004 — Appropriate Handling of Finalized Documents
 
 **Requirement:**
-The system shall treat Finalized System Records as completed documents requiring controlled handling.
+The system shall treat Finalized Documents as completed documents requiring controlled handling.
 
 **Priority:** SHOULD
 
@@ -306,7 +293,7 @@ Generated documents must reflect the verified data the operator approved.
 ### NFR-DAT-004 — Preserve Integrity of Finalized Documents
 
 **Requirement:**
-The system shall not silently alter Finalized System Records.
+The system shall not silently alter Finalized Documents.
 
 **Priority:** MUST
 
@@ -606,7 +593,7 @@ Supports accountability and potential evidentiary needs (FR-LR-042). Client-rela
 | Category | NFR IDs | Count |
 |---|---|---|
 | NFR-SEC — Security | NFR-SEC-001..NFR-SEC-004 | 4 |
-| NFR-PRI — Privacy | NFR-PRI-001..NFR-PRI-005 | 5 |
+| NFR-PRI — Privacy | NFR-PRI-001, NFR-PRI-002, NFR-PRI-004, NFR-PRI-005 | 4 |
 | NFR-DAT — Data Integrity | NFR-DAT-001..NFR-DAT-004 | 4 |
 | NFR-USE — Usability | NFR-USE-001..NFR-USE-004 | 4 |
 | NFR-REL — Reliability | NFR-REL-001, NFR-REL-002 | 2 |
@@ -615,7 +602,7 @@ Supports accountability and potential evidentiary needs (FR-LR-042). Client-rela
 | NFR-MNT — Maintainability | NFR-MNT-001, NFR-MNT-002 | 2 |
 | NFR-BAC — Backup and Recovery | NFR-BAC-001, NFR-BAC-002 | 2 |
 | NFR-AUD — Auditability | NFR-AUD-001 | 1 |
-| **Total** | | **26** |
+| **Total** | | **25** |
 
 ---
 
@@ -629,7 +616,7 @@ Supports accountability and potential evidentiary needs (FR-LR-042). Client-rela
 | NFR-SEC-004 | FR-LR-001 | — | — | §13.5 |
 | NFR-PRI-001 | FR-LR-002, FR-LR-048 | BR-003 | DN-P1-08, DN-P2-08 | NFR-003 |
 | NFR-PRI-002 | — | — | DN-SRC-05, DN-LIFE-01 | §13.3 |
-| NFR-PRI-003 | — | — | — | §13.5 |
+| NFR-PRI-003 | — | — | — | §13.5 (merged into NFR-SEC-004, 2026-08-13) |
 | NFR-PRI-004 | FR-LR-037, FR-LR-048 | BR-006 | DN-LIFE-04 | — |
 | NFR-DAT-001 | FR-LR-021 | BR-018 | DN-LIFE-02 | NFR-006 |
 | NFR-DAT-002 | — | — | DN-LIFE-02 | NFR-012 |
@@ -663,7 +650,7 @@ Supports accountability and potential evidentiary needs (FR-LR-042). Client-rela
 ### Duplicate / Overlapping Requirements
 | ID | Issue |
 |---|---|
-| NFR-SEC-004 vs NFR-PRI-003 | Both address transfer protection. Kept as two views (security vs privacy) of the same underlying concern; recommend merging during SRS consolidation. |
+| NFR-SEC-004 vs NFR-PRI-003 | ~~Both addressed transfer protection as two views (security vs privacy).~~ **RESOLVED 2026-08-13** — NFR-PRI-003 merged into NFR-SEC-004 (security + privacy). |
 | NFR-SEC-001 vs NFR-PRI-001 | Overlapping (both limit access). Distinct focus (data protection vs privacy principle); consider consolidation in SRS pass. |
 | NFR-PRI-005 vs NFR-PRI-001 | NFR-PRI-005 extends access limitation explicitly to Client records and client-associated source documents (reusable, cross-case data). Kept distinct because client data is a separate protection scope per Decision 006. |
 

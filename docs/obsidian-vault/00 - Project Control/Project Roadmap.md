@@ -2,7 +2,7 @@
 
 ***
 **Status:** Living Document  
-**Last Updated:** 2026-07-27
+**Last Updated:** 2026-08-13
 ***
 
 ## Phases
@@ -56,7 +56,7 @@ Some workstreams may begin early once their prerequisites are satisfied. For exa
 ---
 
 #### 0.2 — Domain Research
-- **Status:** Pending
+- **Status:** Complete (primary artifact `01 - Domain Research/Domain Overview.md`; not all listed sub-artifacts were produced)
 - **Objective:** Build a foundational understanding of Nepali land documentation, the stakeholders involved, the legal and administrative context, and common workflows.
 - **Activities:**
   - Research types of land documents used in Nepal (title deeds, land revenue receipts, cadastral maps, etc.)
@@ -78,7 +78,7 @@ Some workstreams may begin early once their prerequisites are satisfied. For exa
 ---
 
 #### 0.3 — Sample Document Analysis
-- **Status:** Pending
+- **Status:** Complete (primary artifact `02 - Document Analysis/Land Rent Template Analysis.md`; not all listed sub-artifacts were produced)
 - **Objective:** Analyze real or representative sample land documents to understand structure, content patterns, data fields, and variability.
 - **Activities:**
   - Collect sample documents (anonymized if necessary)
@@ -120,6 +120,7 @@ Some workstreams may begin early once their prerequisites are satisfied. For exa
 - **Dependencies:** 0.2 Domain Research, 0.3 Sample Document Analysis
 - **Completion Criteria:** All requirements are captured, categorized, and reviewed. Each requirement has a unique ID, description, and source reference. A requirements-synchronization pass reflecting agreed product decisions has been performed.
 - **Note:** Draft requirements artifacts exist as of 2026-08-08 but are **not** baselined; they remain pending review and acceptance.
+- **Note (2026-08-13):** Initial prototype scope agreed as LAND_RENT with **agricultural use purpose only** ([[../00 - Project Control/Decision Log|Decision 010]]); manual-first architecture confirmed ([[../00 - Project Control/Decision Log|Decision 009]]). A vault-wide terminology and scope audit was performed; follow-up corrections are tracked via this roadmap and the [[../00 - Project Control/Open Questions|Open Questions]].
 
 ---
 
@@ -187,9 +188,10 @@ Some workstreams may begin early once their prerequisites are satisfied. For exa
 
 #### 0.8 — Technical Research
 - **Status:** Pending
-- **Objective:** Investigate OCR technologies for Nepali (Devanagari) text and document-generation solutions, producing recommendations.
+- **Objective:** Investigate source-document capture and OCR feasibility for Nepali (Devanagari) text (a pre-deployment requirement per Decision 009) and document-generation solutions, producing recommendations. OCR/capture are proposed enhancements, never prerequisites — the system functions on manual entry alone.
 - **Activities:**
-  - Evaluate OCR engines for Devanagari script support (Tesseract, Google Cloud Vision, Azure OCR, etc.)
+  - Evaluate OCR engines for Devanagari script support (research candidates only — Tesseract, Google Cloud Vision, Azure OCR, etc.; no selection is made here)
+  - Evaluate source-document capture mechanisms (camera, file upload) for full deployment
   - Test OCR accuracy on sample documents if feasible
   - Research document-generation libraries and tools (PDF generation, templating, etc.)
   - Evaluate output format support (PDF, DOCX, etc.)
@@ -201,7 +203,7 @@ Some workstreams may begin early once their prerequisites are satisfied. For exa
   - `08 - Document Generation/Document Generation Research.md`
   - `08 - Document Generation/DocGen Candidate Comparison.md`
 - **Dependencies:** 0.3 Sample Document Analysis (for OCR test data), may begin during 0.4 Requirements Engineering
-- **Completion Criteria:** OCR and document-generation candidates are identified, compared, and findings documented. Recommendations are ready for architecture decisions.
+- **Completion Criteria:** OCR/capture and document-generation candidates are identified, compared, and findings documented. Recommendations are ready for architecture decisions. OCR/capture feasibility must be established before full deployment (Decision 009).
 
 ---
 
@@ -253,9 +255,9 @@ Some workstreams may begin early once their prerequisites are satisfied. For exa
 - [ ] Set up development environment
 - [ ] Implement backend services
 - [ ] Implement frontend (mobile/web)
-- [ ] Integrate OCR capabilities
 - [ ] Integrate document generation
 - [ ] Implement business rules
+- [ ] Integrate source-document capture and OCR capabilities (required before full deployment; gated on Phase 0.8 research, Decision 009)
 
 ### Phase 3 — Testing & Deployment
 - [ ] Unit and integration testing
@@ -269,8 +271,9 @@ Some workstreams may begin early once their prerequisites are satisfied. For exa
 | Milestone | Target |
 |---|---|
 | Vault structure complete | Done |
-| Domain research complete | TBD |
-| Document analysis complete | TBD |
+| Domain research complete | Done |
+| Document analysis complete | Done |
+| Prototype scope agreed (LAND_RENT, agricultural use purpose) | Done — 2026-08-13 (Decision 010) |
 | Requirements baselined | TBD |
 | SRS complete | TBD |
 | System design complete | TBD |
