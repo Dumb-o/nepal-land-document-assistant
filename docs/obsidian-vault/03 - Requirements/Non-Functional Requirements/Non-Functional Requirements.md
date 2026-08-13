@@ -7,13 +7,15 @@
 > These requirements are derived from:
 > - **Existing SRS** (`03 - Requirements/SRS/SRS.md`) — legacy NFR-001..NFR-013
 > - **Use Cases** (`03 - Requirements/Use Cases.md`) — operator characteristics and workflow
-> - **Data Needs** (`03 - Requirements/Business Rules/Data Needs.md`) — data sensitivity and lifecycle
+> - **Data Needs** (`03 - Requirements/Data Needs.md`) — data sensitivity and lifecycle
 > - **Business Rules** (`03 - Requirements/Business Rules/Business Rules.md`) — access and integrity rules
 > - **Functional Requirements** (`03 - Requirements/Functional Requirements.md`) — FR-LR-* behaviors they qualify
 >
-> **Relationship to the SRS:** The SRS (v0.1) is **not modified** by this task. Legacy SRS NFR IDs are preserved and mapped to the new IDs below (see §2).
+> **Relationship to the SRS:** On 2026-08-08 the SRS was revised as a **requirements-synchronization revision (v0.1.1)** reflecting agreed product decisions (persistent Cases, Case Type, Client concept, typed documents). Legacy SRS NFR IDs are preserved and mapped to the new IDs below (see §2).
 >
 > **Measurability note:** Only qualitative NFRs are defined. No numerical targets (response times, availability percentages, user counts) are specified because the project documentation does not yet support them. Where a target is needed, the requirement is marked **[TO BE VALIDATED]**.
+>
+> **2026-08-08 update:** Reflected the persistent Case/Client/document model in Security, Privacy, Data Integrity, Backup, and Auditability (NFR-SEC-001, NFR-PRI-002, NFR-PRI-005, NFR-BAC-001, NFR-AUD-001). No legal compliance claims are asserted; items remain [TO BE VALIDATED].
 
 ---
 
@@ -51,22 +53,22 @@
 
 ### NFR-SEC — Security
 
-### NFR-SEC-001 — Protect Stored Case and Document Data
+### NFR-SEC-001 — Protect Stored Case, Client, and Document Data
 
 **Requirement:**
-The system shall protect stored case data and documents from unauthorized access.
+The system shall protect stored case data, client data, client-associated source documents, and generated documents from unauthorized access.
 
 **Priority:** MUST
 
 **Status:** PROPOSED
 
 **Rationale:**
-The system handles personal identity information (names, citizenship numbers) and property records.
+The system handles personal identity information (names, citizenship numbers), property records, and client-provided source documents (e.g., citizenship certificates, Lalpurja).
 
 **Verification Method:** Inspection / Test
 
 **Acceptance Criteria:**
-- Unauthorized users cannot access stored case data or documents.
+- Unauthorized users cannot access stored case data, client data, client source documents, or documents.
 - Access to stored data is mediated by the authorization controls in FR-LR-002.
 - [TO BE DETERMINED] Specific protection mechanisms (encryption at rest, etc.) require security research.
 
@@ -165,14 +167,35 @@ The system shall not retain personal or sensitive information beyond what is nec
 **Status:** PROPOSED
 
 **Rationale:**
-Minimizing retained data reduces privacy risk (data minimization principle, SRS §13.3).
+Minimizing retained data reduces privacy risk (data minimization principle, SRS §13.3). Finalized cases and finalized documents are intended to be retained indefinitely for operational use; the concrete retention/archival/backup/deletion policy remains [TO BE VALIDATED].
 
 **Verification Method:** Inspection
 
 **Acceptance Criteria:**
 - Retention of each artifact type (source documents, Candidate Data, drafts, finalized documents, audit logs) is defined or explicitly left open.
 - Exact retention periods are [TO BE DETERMINED]; no retention periods are invented here.
-- Where retention is unresolved, the corresponding OPEN QUESTION is referenced (SRS §10.10; Data Needs OQ-DN-06).
+- Where retention is unresolved, the corresponding OPEN QUESTION is referenced (SRS §10.10; Data Needs OQ-DN-06, OQ-DN-10).
+
+---
+
+### NFR-PRI-005 — Protect Client Personal Information
+
+**Requirement:**
+The system shall protect Client records and client-associated source documents as sensitive personal information, consistent with the protection applied to case data.
+
+**Priority:** MUST
+
+**Status:** PROPOSED
+
+**Rationale:**
+Client records (names, lineage, addresses, citizenship numbers) and client-provided source documents (citizenship certificates, Lalpurja) are reusable across cases and highly sensitive (Decision 006).
+
+**Verification Method:** Test / Inspection
+
+**Acceptance Criteria:**
+- Client records are accessible only to authenticated, authorized operators.
+- Client-associated source documents are protected at least as strictly as case data.
+- Access to client data is mediated by the authorization controls in FR-LR-002 and BR-037.
 
 ---
 
@@ -515,24 +538,24 @@ Domain terminology and options may evolve; reducing code coupling improves maint
 
 ### NFR-BAC — Backup and Recovery
 
-### NFR-BAC-001 — Support Backup of Case Data and Documents
+### NFR-BAC-001 — Support Backup of Case, Client, and Document Data
 
 **Requirement:**
-The system shall support regular backup of case data and finalized documents.
+The system shall support regular backup of case data, client data, client-associated source documents, and finalized documents.
 
 **Priority:** SHOULD
 
 **Status:** PROPOSED
 
 **Rationale:**
-Data loss could result in significant work being lost.
+Data loss could result in significant work being lost, including long-lived cases and client records.
 
 **Verification Method:** Test
 
 **Acceptance Criteria:**
-- Case data and finalized documents are included in backups.
+- Case data, client data, client source documents, and finalized documents are included in backups.
 - Backup frequency and method are [TO BE DETERMINED]; no backup schedule is invented here.
-- Backups containing case data are protected with access controls consistent with live data (SRS §13.9).
+- Backups containing sensitive data are protected with access controls consistent with live data (SRS §13.9).
 
 ---
 
@@ -561,19 +584,19 @@ Finalized documents are the primary deliverables and must survive data loss even
 ### NFR-AUD-001 — Maintain Logs for Event Reconstruction
 
 **Requirement:**
-The system shall maintain logs that allow reconstruction of significant events (case creation, document generation, finalization, access to finalized documents).
+The system shall maintain logs that allow reconstruction of significant events (case creation, client creation, client-to-case association, document generation, finalization, access to finalized documents).
 
 **Priority:** SHOULD
 
 **Status:** PROPOSED
 
 **Rationale:**
-Supports accountability and potential evidentiary needs (FR-LR-042).
+Supports accountability and potential evidentiary needs (FR-LR-042). Client-related lifecycle events are significant because client records are reusable and sensitive (Decision 006).
 
 **Verification Method:** Test
 
 **Acceptance Criteria:**
-- Significant events are logged with timestamp, operator identity, and case/document reference.
+- Significant events are logged with timestamp, operator identity, and case/document/client reference.
 - The exact set of audited events is [TO BE VALIDATED] and is not expanded beyond the MVP's needs.
 
 ---
@@ -583,7 +606,7 @@ Supports accountability and potential evidentiary needs (FR-LR-042).
 | Category | NFR IDs | Count |
 |---|---|---|
 | NFR-SEC — Security | NFR-SEC-001..NFR-SEC-004 | 4 |
-| NFR-PRI — Privacy | NFR-PRI-001..NFR-PRI-004 | 4 |
+| NFR-PRI — Privacy | NFR-PRI-001..NFR-PRI-005 | 5 |
 | NFR-DAT — Data Integrity | NFR-DAT-001..NFR-DAT-004 | 4 |
 | NFR-USE — Usability | NFR-USE-001..NFR-USE-004 | 4 |
 | NFR-REL — Reliability | NFR-REL-001, NFR-REL-002 | 2 |
@@ -592,7 +615,7 @@ Supports accountability and potential evidentiary needs (FR-LR-042).
 | NFR-MNT — Maintainability | NFR-MNT-001, NFR-MNT-002 | 2 |
 | NFR-BAC — Backup and Recovery | NFR-BAC-001, NFR-BAC-002 | 2 |
 | NFR-AUD — Auditability | NFR-AUD-001 | 1 |
-| **Total** | | **25** |
+| **Total** | | **26** |
 
 ---
 
@@ -622,9 +645,10 @@ Supports accountability and potential evidentiary needs (FR-LR-042).
 | NFR-ACC-001 | — | — | — | §8.7 |
 | NFR-MNT-001 | FR-LR-043 | — | DN-DOC-05 | NFR-010 |
 | NFR-MNT-002 | FR-LR-043 | — | — | — |
-| NFR-BAC-001 | FR-LR-038 | — | DN-LIFE-04 | NFR-013 |
+| NFR-BAC-001 | FR-LR-038, FR-LR-050 | — | DN-LIFE-04, DN-LIFE-06, DN-CLI | NFR-013 |
 | NFR-BAC-002 | FR-LR-038 | — | DN-LIFE-04 | NFR-013 |
 | NFR-AUD-001 | FR-LR-042 | — | DN-LIFE-05 | NFR-011 |
+| NFR-PRI-005 | FR-LR-055, FR-LR-056, FR-LR-061 | BR-037 | DN-CLI, DN-SRC-06 | NFR-003 (extension) |
 
 ---
 
@@ -641,6 +665,7 @@ Supports accountability and potential evidentiary needs (FR-LR-042).
 |---|---|
 | NFR-SEC-004 vs NFR-PRI-003 | Both address transfer protection. Kept as two views (security vs privacy) of the same underlying concern; recommend merging during SRS consolidation. |
 | NFR-SEC-001 vs NFR-PRI-001 | Overlapping (both limit access). Distinct focus (data protection vs privacy principle); consider consolidation in SRS pass. |
+| NFR-PRI-005 vs NFR-PRI-001 | NFR-PRI-005 extends access limitation explicitly to Client records and client-associated source documents (reusable, cross-case data). Kept distinct because client data is a separate protection scope per Decision 006. |
 
 ### Conflicting Requirements
 | ID | Issue |

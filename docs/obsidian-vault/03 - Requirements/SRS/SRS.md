@@ -2,7 +2,9 @@
 
 ## Nepal Land Document Assistant — Land-Rent Document Preparation Module
 
-> **SRS v0.1 is a working requirements hypothesis and discovery document.** It provides an initial structure for requirements engineering but is not yet a validated or baselined specification. Requirements will evolve through domain expert validation, land-rent template analysis, source-document analysis, domain research, legal/regulatory verification, and technical feasibility research.
+> **SRS v0.1.1 is a working requirements hypothesis and discovery document.** It provides an initial structure for requirements engineering but is not yet a validated or baselined specification. Requirements will evolve through domain expert validation, land-rent template analysis, source-document analysis, domain research, legal/regulatory verification, and technical feasibility research.
+>
+> **2026-08-08 — Requirements Synchronization Revision (v0.1.1):** This revision reflects agreed product decisions (persistent Cases, Case Type classification, Client as a distinct reusable concept, typed Source/Generated/Finalized documents, human authority, Land Rent stays the MVP). It is a synchronization update, **not a rewrite**: existing content, IDs, and structure are preserved. The document remains a working draft and is **not baselined**.
 
 ---
 
@@ -12,9 +14,9 @@
 |---|---|
 | Document Title | Software Requirements Specification — Land-Rent Document Preparation Module |
 | Project Name | Nepal Land Document Assistant |
-| Version | 0.1 |
+| Version | 0.1.1 |
 | Status | Working Draft |
-| Date | 2026-07-27 |
+| Date | 2026-08-08 |
 | Author | Project Team |
 | Document Purpose | To define the initial functional and non-functional requirements for the land-rent document preparation module. This is a working draft and has not been baselined. |
 
@@ -23,6 +25,7 @@
 | Version | Date | Author | Description |
 |---|---|---|---|
 | 0.1 | 2026-07-27 | Project Team | Initial working draft |
+| 0.1.1 | 2026-08-08 | Project Team | Requirements synchronization revision reflecting product decisions: persistent Cases, Case Type classification (MVP: LAND_RENT), Client as a distinct reusable concept, distinct Source / Generated Draft / Finalized document types, human authority. Not baselined. |
 
 ---
 
@@ -41,7 +44,7 @@ The document is intended to:
 - Provide a basis for system design, development, and testing.
 - Capture unresolved questions requiring further research and validation.
 
-This is version 0.1 — a working draft. Requirements marked [PROPOSED], [TO BE VALIDATED], or [OPEN QUESTION] are not confirmed and require further investigation before the SRS can be baselined.
+This is version 0.1.1 — a working draft updated as a requirements-synchronization revision. Requirements marked [PROPOSED], [TO BE VALIDATED], or [OPEN QUESTION] are not confirmed and require further investigation before the SRS can be baselined.
 
 ### 2.2 Intended Audience
 
@@ -69,13 +72,14 @@ This is version 0.1 — a working draft. Requirements marked [PROPOSED], [TO BE 
 
 The system shall assist authorized document-preparation professionals in the automated preparation of land-rent documents for property in Nepal. The system will:
 
-1. Allow an operator to create and manage cases.
-2. Accept source documents via capture or upload.
-3. Support information acquisition from source documents, which may include manual data entry and/or automated information extraction (automated extraction is subject to technical feasibility research).
-4. Maintain structured, verified case information.
-5. Generate a land-rent document using a controlled template.
-6. Support document review and finalization.
-7. Store finalized documents with appropriate access control.
+1. Allow an operator to create and manage **persistent, classified cases** (Case Type; MVP: LAND_RENT), including viewing Recent Cases after authentication, opening existing cases, and accessing a broader case directory.
+2. Manage reusable **Client** records (create, view, search, associate with cases, reuse) — a Client is distinct from the Application User.
+3. Accept source documents via capture or upload.
+4. Support information acquisition from source documents, which may include manual data entry and/or automated information extraction (automated extraction is subject to technical feasibility research).
+5. Maintain structured, verified case information.
+6. Generate a land-rent document using a controlled template.
+7. Support document review and finalization, distinguishing **Source Documents**, **Generated Drafts**, and **Finalized Documents**.
+8. Store finalized documents and finalized cases persistently, intended to be retained indefinitely for operational use (exact retention/archival/backup/deletion policies [TO BE VALIDATED]), with appropriate access control.
 
 **Future Potential Scope:**
 
@@ -118,13 +122,17 @@ This principle does not guarantee legal validity. It defines the intended relati
 
 | Term | Definition |
 |---|---|
-| Case | A single land-rent document preparation instance, comprising source documents, acquired data, verified data, drafts, and the finalized document |
+| Application User | A person who operates the system (e.g., a document-preparation operator or administrator). An Application User is distinct from a **Client**. |
+| Client | The person or organization on whose behalf a case is processed (e.g., a landowner or tenant in a land-rent case). A Client is not an Application User and does not necessarily log in to the system. A Client's information may be reused across one or more Cases. |
+| Case | A long-lived, self-contained matter (e.g., a land-rent document preparation instance) comprising source documents, acquired data, verified data, drafts, and the finalized document. A Case persists after finalization and is classified by a Case Type. |
+| Case Type | The classification of a Case that determines its workflow and document requirements. The MVP supports a single Case Type: LAND_RENT. Future Case Types are possible but out of scope for the MVP. A Case Type is distinct from a property's **use purpose** (agricultural, business, residential) and from document type. |
 | Operator | The authorized professional who uses the system to prepare documents |
-| Source Document | A physical or digital document provided by the client that serves as input to the document preparation process |
+| Source Document | A physical or digital document provided by the client that serves as input to the document preparation process (e.g., citizenship certificate, Lalpurja) |
 | Candidate Data | Data that has been acquired (via automated extraction, manual entry, or import) but has not yet been verified by the operator |
 | Verified Case Data | Data that has been reviewed, corrected (if needed), and explicitly confirmed by the operator |
-| Draft | A preliminary version of the generated document pending final review |
-| Finalized Document | The completed document approved by the operator for delivery to the client |
+| Draft | A preliminary version of the generated document pending final review (a **Generated Draft**) |
+| Finalized Document | The completed document explicitly finalized by an authorized operator for delivery to the client. Finalization is a human decision; the application does not determine legal validity |
+| Generated Draft | A document produced by the system (or operator) from Case and Client information that has not yet been finalized |
 | Land-Rent Document | A document establishing the terms of a land or property rental/lease agreement |
 | Human-in-the-Loop | A workflow design where automated processes produce outputs that require human review before they are considered final |
 | MVP | Minimum Viable Product — the smallest functional release that delivers value |
@@ -190,7 +198,13 @@ The specific source documents required, the sequence of signing, and the retenti
 The following conceptual workflow is [PROPOSED] and requires validation with domain experts:
 
 ```
-Source Documents (client-provided)
+Authentication
+    ↓
+Recent Cases / Home (post-auth landing experience)
+    ├── Open an existing Case (in-progress or finalized)
+    └── Create a new Case (assign Case Type; MVP: LAND_RENT)
+                ↓
+Source Documents (client-provided, associated with Client and/or Case)
     ↓
 Capture / Upload (via camera or file)
     ↓
@@ -207,14 +221,24 @@ Verified Case Data
     ↓
 [TEMPLATE-BASED] Document Generation
     ↓
-Draft Document
+Draft Document (Generated Draft)
     ↓
 Human Review (operator reviews generated document)
     ↓
 Operator Finalization
     ↓
-Finalized System Record
+Finalized System Record (Finalized Document)
+    ↓
+Persistent Storage (Case and finalized documents retained indefinitely for
+                    operational use; retention/archival/backup/deletion
+                    policies [TO BE VALIDATED])
 ```
+
+**Post-authentication experience:** Recent Cases is the primary landing view after authentication (Decision 004). The operator can open an existing case (including finalized cases) or create a new one, and can access a broader case directory organized by Case Type and other supported classification criteria (see FR-037, FR-038).
+
+**Clients:** A Case is processed on behalf of one or more Clients. Client records are reusable across Cases and are distinct from Application User accounts (Decision 006; see Section 7.15).
+
+**Case Type:** Every Case is classified by a Case Type. The MVP supports a single Case Type — LAND_RENT. Case Type is distinct from a property's use purpose (Decision 005; see FR-035).
 
 The system's ability to capture, upload, and manage source documents is a core proposed capability. Automated information extraction (which may use OCR or other technologies) is a potential enhancement whose feasibility and reliability have not yet been established.
 
@@ -337,7 +361,10 @@ A client can be a stakeholder (see Section 4.4) without being a system user. The
 
 The MVP covers the complete workflow for **land-rent document preparation** by an authorized operator:
 
-- Case creation and management
+- Case creation and management, with **Case Type** classification (MVP: LAND_RENT only)
+- **Persistent cases**: cases and finalized documents are retained after finalization and remain retrievable (retention/archival/backup/deletion policies [TO BE VALIDATED])
+- **Recent Cases** as the post-authentication landing experience (open existing or create new) and a case directory for browsing by Case Type
+- **Client management**: create, view, search, associate with cases, and reuse Client records (a Client is distinct from the Application User)
 - Source document capture via camera or file upload
 - Manual data entry (core capability)
 - [PROPOSED] Automated information extraction (subject to technical research)
@@ -347,6 +374,7 @@ The MVP covers the complete workflow for **land-rent document preparation** by a
 - Draft review by the operator
 - Operator-driven finalization
 - Storage of finalized documents with access control
+- Distinction between **Source Documents**, **Generated Drafts**, and **Finalized Documents**
 
 Whether OCR and automated extraction are part of the MVP is [TO BE DETERMINED] based on technical research.
 
@@ -418,17 +446,19 @@ The Case is a first-class domain concept that organizes all information and arti
 
 ```
 CASE
+├── Case Type (MVP: LAND_RENT)
+├── Clients (reusable; distinct from Application Users)
 ├── Parties
 ├── Property Information
 ├── Source Documents
 ├── Candidate / Entered Data
 ├── Verified Case Data
-├── Draft Documents
+├── Draft Documents (Generated Drafts)
 ├── Finalized Documents
 └── Audit History
 ```
 
-> The lifecycle below is [PROPOSED] and has not been validated with domain experts. The exact states and transitions may differ from actual practice.
+> The lifecycle below is [PROPOSED] and has not been validated with domain experts. The exact states and transitions may differ from actual practice. Cases persist after finalization.
 
 [PROPOSED] A possible conceptual lifecycle is:
 
@@ -439,7 +469,7 @@ Created
 → Draft Generated
 → Review
 → Finalized
-→ Archived / Closed
+→ Persistent (retained for operational use; archival is [OPEN QUESTION])
 ```
 
 | Field | Description |
@@ -490,6 +520,66 @@ Created
 | **Status** | [PROPOSED] |
 | **Rationale** | Audit trail requirement. |
 | **Source** | Reasonable practice |
+| **Validation Needed** | No |
+
+| Field | Description |
+|---|---|
+| **ID** | FR-035 |
+| **Requirement** | Each case shall be assigned a Case Type at creation. The MVP supports a single Case Type: LAND_RENT. Additional Case Types are future scope. |
+| **Priority** | Must |
+| **Status** | [PROPOSED] |
+| **Rationale** | Case Type classifies a case and determines its workflow and document requirements (Decision 005). It is distinct from a property's use purpose and from document type. |
+| **Source** | Product decision 005 |
+| **Validation Needed** | Yes — classification taxonomy [TO BE VALIDATED] |
+
+| Field | Description |
+|---|---|
+| **ID** | FR-036 |
+| **Requirement** | Cases shall persist after finalization. Finalized cases and finalized documents are intended to be retained indefinitely for operational use. Exact retention, archival, backup, and deletion policies are [TO BE VALIDATED]. |
+| **Priority** | Must |
+| **Status** | [PROPOSED] |
+| **Rationale** | A case and its artifacts remain available after finalization for operational use (Decision 004). No legal retention period is asserted. |
+| **Source** | Product decision 004 |
+| **Validation Needed** | Yes — retention/archival/backup/deletion policy [TO BE VALIDATED] |
+
+| Field | Description |
+|---|---|
+| **ID** | FR-037 |
+| **Requirement** | The system shall present Recent Cases as the post-authentication landing experience, from which the operator can open an existing case, create a new case, and access the broader case directory. |
+| **Priority** | Should |
+| **Status** | [PROPOSED] |
+| **Rationale** | Recent Cases is the primary post-auth experience: open existing or create new (Decision 004). |
+| **Source** | Product decision 004 |
+| **Validation Needed** | Yes — with domain experts |
+
+| Field | Description |
+|---|---|
+| **ID** | FR-038 |
+| **Requirement** | The system shall allow authorized users to organize, browse, and retrieve cases by Case Type and other supported classification criteria. |
+| **Priority** | Should |
+| **Status** | [PROPOSED] |
+| **Rationale** | A case directory supports organizing, browsing, and retrieving cases by classification (Decision 005). No specific navigation hierarchy is prescribed. |
+| **Source** | Product decision 005 |
+| **Validation Needed** | Yes — classification criteria [TO BE VALIDATED] |
+
+| Field | Description |
+|---|---|
+| **ID** | FR-039 |
+| **Requirement** | The operator shall be able to open an existing case (including finalized cases) to view or resume its contents. |
+| **Priority** | Must |
+| **Status** | [PROPOSED] |
+| **Rationale** | Operators resume in-progress cases and reference finalized cases (Decision 004). |
+| **Source** | Product decision 004 |
+| **Validation Needed** | No |
+
+| Field | Description |
+|---|---|
+| **ID** | FR-040 |
+| **Requirement** | The system shall maintain per-case metadata: Case ID, Case Type, Status, Creation date, Last updated, associated Clients, Property, Source Documents, Generated Documents, and Finalized Documents. |
+| **Priority** | Must |
+| **Status** | [PROPOSED] |
+| **Rationale** | Complete case metadata supports retrieval, organization, and operational use of persistent cases (Decision 004). |
+| **Source** | Product decision 004 |
 | **Validation Needed** | No |
 
 ### 7.3 Source Document Capture and Upload
@@ -851,7 +941,7 @@ Distinguish between:
 - **Case Search:** Locating a specific case by its attributes.
 - **Finalized Document Retrieval:** Accessing a previously finalized document associated with a case.
 
-Potential search fields (all [PROPOSED] / [TO BE VALIDATED]) may include: Case ID, party name, property identifier (kitta number), and date range.
+Potential search fields (all [PROPOSED] / [TO BE VALIDATED]) may include: Case ID, Case Type, party name, client name, property identifier (kitta number), and date range.
 
 | Field | Description |
 |---|---|
@@ -866,7 +956,7 @@ Potential search fields (all [PROPOSED] / [TO BE VALIDATED]) may include: Case I
 | Field | Description |
 |---|---|
 | **ID** | FR-033 |
-| **Requirement** | [PROPOSED] Search may support criteria including case ID, party name, property identifier (kitta number), and date range. |
+| **Requirement** | [PROPOSED] Search may support criteria including case ID, case type, party name, client name, property identifier (kitta number), and date range. |
 | **Priority** | Should |
 | **Status** | [PROPOSED] |
 | **Rationale** | These are likely search criteria based on domain research, but actual operator needs are unknown. |
@@ -889,6 +979,104 @@ The system should maintain an Audit History of significant lifecycle events. Pot
 | **Source** | Reasonable practice for systems handling sensitive information |
 | **Validation Needed** | Yes — scope of audit events [TO BE VALIDATED] |
 
+### 7.15 Client Management
+
+> A **Client** is the person or organization on whose behalf a case is processed — distinct from the **Application User** (operator). Client records are reusable across cases (Decision 006). Client fields reuse the Field Dictionary party identity fields; no fields are invented without validation.
+
+| Field | Description |
+|---|---|
+| **ID** | FR-041 |
+| **Requirement** | The operator shall be able to create a Client record containing the client's identity information (name, lineage, address, citizenship details; organization details where applicable). |
+| **Priority** | Must |
+| **Status** | [PROPOSED] |
+| **Rationale** | Clients are reusable domain entities (Decision 006). |
+| **Source** | Product decision 006 |
+| **Validation Needed** | Yes — exact Client fields [TO BE VALIDATED] |
+
+| Field | Description |
+|---|---|
+| **ID** | FR-042 |
+| **Requirement** | The operator shall be able to view a Client's stored information. |
+| **Priority** | Must |
+| **Status** | [PROPOSED] |
+| **Rationale** | Operators need to review client information (Decision 006). |
+| **Source** | Product decision 006 |
+| **Validation Needed** | No |
+
+| Field | Description |
+|---|---|
+| **ID** | FR-043 |
+| **Requirement** | [PROPOSED] The operator shall be able to search for Client records (e.g., by name, citizenship number, or other supported criteria). |
+| **Priority** | Should |
+| **Status** | [PROPOSED] |
+| **Rationale** | Locating existing clients enables reuse and avoids duplicate records (Decision 006). |
+| **Source** | Product decision 006 |
+| **Validation Needed** | Yes — search criteria [TO BE VALIDATED] |
+
+| Field | Description |
+|---|---|
+| **ID** | FR-044 |
+| **Requirement** | The operator shall be able to associate a Client with a Case. Client information may pre-fill the case's party fields. |
+| **Priority** | Must |
+| **Status** | [PROPOSED] |
+| **Rationale** | A case is processed on behalf of one or more clients (Decision 006). |
+| **Source** | Product decision 006 |
+| **Validation Needed** | Yes — with domain experts |
+
+| Field | Description |
+|---|---|
+| **ID** | FR-045 |
+| **Requirement** | The operator shall be able to reuse an existing Client record across multiple Cases rather than re-entering client information. |
+| **Priority** | Should |
+| **Status** | [PROPOSED] |
+| **Rationale** | Client records are reusable (Decision 006); reuse reduces re-entry and inconsistency. |
+| **Source** | Product decision 006 |
+| **Validation Needed** | No |
+
+| Field | Description |
+|---|---|
+| **ID** | FR-046 |
+| **Requirement** | The operator shall be able to view the Cases associated with a given Client. |
+| **Priority** | Should |
+| **Status** | [PROPOSED] |
+| **Rationale** | Operators need to see all cases involving a client (Decision 006). |
+| **Source** | Product decision 006 |
+| **Validation Needed** | Yes — with domain experts |
+
+| Field | Description |
+|---|---|
+| **ID** | FR-047 |
+| **Requirement** | [PROPOSED] The system shall allow Source Documents to be associated with a Client in addition to their Case association. Source document capture/upload remains subject to Section 7.3; this requirement covers the association model. |
+| **Priority** | Should |
+| **Status** | [PROPOSED] |
+| **Rationale** | Source documents are evidence tied to a client and/or a case (Decisions 006, 007). Whether they live at the client level, case level, or both is [OPEN QUESTION]. |
+| **Source** | Product decisions 006, 007 |
+| **Validation Needed** | Yes — storage level [OPEN QUESTION] |
+
+### 7.16 Document Types (Source / Draft / Finalized)
+
+> The system distinguishes three non-interchangeable document types (Decision 007): **Source Documents** (supplied/captured evidence), **Generated Drafts** (produced, not finalized), and **Finalized Documents** (explicitly finalized by a human).
+
+| Field | Description |
+|---|---|
+| **ID** | FR-048 |
+| **Requirement** | The system shall distinguish Source Documents, Generated Drafts, and Finalized Documents as separate, non-interchangeable document types. |
+| **Priority** | Must |
+| **Status** | [PROPOSED] |
+| **Rationale** | The three document types are distinct and not interchangeable (Decision 007). |
+| **Source** | Product decision 007 |
+| **Validation Needed** | No |
+
+| Field | Description |
+|---|---|
+| **ID** | FR-049 |
+| **Requirement** | The system shall not present a Source Document or a Generated Draft as a Finalized Document. Only a document explicitly finalized by an authorized human is a Finalized Document, and the system does not imply legal validity. |
+| **Priority** | Must |
+| **Status** | [PROPOSED] |
+| **Rationale** | Finalization is a human decision (Decisions 007, 008; Human Authority Principle, Section 2.5). |
+| **Source** | Product decisions 007, 008 |
+| **Validation Needed** | No |
+
 ---
 
 ## 8. Non-Functional Requirements
@@ -898,10 +1086,10 @@ The system should maintain an Audit History of significant lifecycle events. Pot
 | Field | Description |
 |---|---|
 | **ID** | NFR-001 |
-| **Requirement** | The system shall protect stored case and document data from unauthorized access. |
+| **Requirement** | The system shall protect stored case, client, and document data from unauthorized access. |
 | **Priority** | Must |
 | **Status** | [PROPOSED] |
-| **Rationale** | The system handles personal identity information and property records. |
+| **Rationale** | The system handles personal identity information (including Client records) and property records. |
 | **Validation Needed** | Yes — specific security mechanisms [TO BE DETERMINED] |
 
 | Field | Description |
@@ -1034,7 +1222,7 @@ The system should maintain an Audit History of significant lifecycle events. Pot
 | Field | Description |
 |---|---|
 | **ID** | NFR-013 |
-| **Requirement** | The system should support regular backup of case data and finalized documents. |
+| **Requirement** | The system should support regular backup of case data, client data, source documents, and finalized documents. |
 | **Priority** | Should |
 | **Status** | [PROPOSED] |
 | **Rationale** | Data loss could result in significant work being lost. |
@@ -1048,6 +1236,8 @@ This section describes the conceptual information the system may need to manage.
 
 ### 9.1 User Information
 
+Application Users are the operators and administrators of the system. They are distinct from Clients (see 9.13).
+
 - Operator identity (name, credentials, role)
 - Authentication data
 - Access permissions
@@ -1055,9 +1245,12 @@ This section describes the conceptual information the system may need to manage.
 ### 9.2 Case Information
 
 - Case identifier
+- Case Type (classification; MVP: LAND_RENT)
 - Case status
 - Creation date and operator
+- Last updated (date/time)
 - Finalization date and operator (if applicable)
+- Associated Client(s)
 - Case notes
 
 ### 9.3 Property Information
@@ -1096,6 +1289,7 @@ This section describes the conceptual information the system may need to manage.
 - File format
 - Operator-assigned label
 - Association to case
+- Association to Client (where applicable — [OPEN QUESTION] whether source documents live at client level, case level, or both)
 
 ### 9.7 Candidate Data
 
@@ -1149,6 +1343,35 @@ Verified Case Data is information that has been reviewed, corrected (if needed),
 - Case/document reference
 - Details of the event
 
+### 9.13 Client Information
+
+A Client is the person or organization on whose behalf a case is processed, distinct from the Application User. Client fields reuse the Field Dictionary party identity fields (no invented fields):
+
+- Full name (or organization name)
+- Lineage (grandfather, father) for individuals
+- Address (district, municipality, ward)
+- Citizenship details (number, issue date, issue district)
+- Organization details (name, registration) where the client is an entity
+- Association to one or more Cases (a Client may participate in many Cases)
+
+### 9.14 Case Type
+
+- Case Type identifier (MVP: LAND_RENT)
+- Case Type display name / description
+- Associated template(s) for the Case Type
+- Case Type is distinct from a property's use purpose (9.3) and from document type (9.6, 9.10, 9.11)
+
+### 9.15 Generated Document Metadata
+
+Generated documents are system/operator outputs and are distinct from Source Documents (9.6). Each generated document is typed as a **Generated Draft** or a **Finalized Document**:
+
+- Document kind (Draft / Finalized)
+- Draft generation timestamp
+- Finalization timestamp and operator (if finalized)
+- Template identity and version
+- Finalized document identifier and case association (if finalized)
+- Output format / storage location
+
 ---
 
 ## 10. Document Management Requirements
@@ -1197,7 +1420,7 @@ Verified Case Data + Template (specific version)
 
 ### 10.5 Final Document Storage
 
-Finalized System Records are persistently retained. The retention policy for source documents, Candidate Data, Verified Case Data, draft documents, and intermediate processing artifacts is not yet determined and may vary by artifact type.
+Finalized System Records are persistently retained. Finalized cases are intended to be retained indefinitely for operational use; the exact retention, archival, backup, and deletion policy is [TO BE VALIDATED]. The retention policy for other artifacts — source documents, Candidate Data, Verified Case Data, draft documents, and intermediate processing artifacts — is not yet determined and may vary by artifact type.
 
 > The system does not independently determine legal validity. A Finalized System Record is the system's record of a completed document — it does not constitute a legally valid document unless the operator and relevant authorities deem it so.
 
@@ -1228,7 +1451,7 @@ Each finalized document should have:
 
 ### 10.8 Retrieval
 
-- Finalized documents should be retrievable by case ID, party name, property reference, and date range.
+- Finalized documents should be retrievable by case ID, party name, client name, case type, property reference, and date range.
 - [TO BE VALIDATED] With domain experts.
 
 ### 10.9 Access Control
@@ -1238,7 +1461,8 @@ Each finalized document should have:
 
 ### 10.10 Retention
 
-- [OPEN QUESTION] How long should finalized documents be retained? The answer may depend on legal requirements, business practice, or both.
+- Finalized cases and finalized documents are intended to be retained indefinitely for operational use (Decision 004). This is a product intent, not a legal retention period.
+- [OPEN QUESTION] The exact retention, archival, backup, and deletion policy is [TO BE VALIDATED]. Whether finalized cases can be archived (moved out of the active directory) is also unresolved.
 
 ### 10.11 Backup
 
@@ -1446,9 +1670,10 @@ Authentication establishes the identity of the user. See FR-001. The authenticat
 
 Authorization determines what an authenticated user is permitted to do. See FR-002 and FR-003.
 
-- Operator role: can create and manage cases, generate and finalize documents.
+- Operator role: can create and manage cases, manage Client records, and generate and finalize documents.
 - Administrator role: can manage operator accounts and system configuration.
 - [PROPOSED] Additional roles may be defined as the system evolves.
+- [PROPOSED] Access to Client records and their associated cases is restricted to authorized operators (see FR-041..FR-047, NFR-001).
 
 ### 13.3 Data Minimization Principle
 
@@ -1539,6 +1764,19 @@ The following rules are derived from preliminary domain research but are **legal
 | BR-011 | Legal validity requirements for the generated document. | [OPEN QUESTION] — requires legal professional input |
 | BR-012 | Whether the system-generated document format is acceptable for notarization. | [OPEN QUESTION] |
 | BR-013 | Whether the system-generated document format is acceptable for Malpot registration (if applicable). | [OPEN QUESTION] |
+
+### 14.5 Product Decision Business Rules
+
+> These rules derive from agreed product decisions ([[../../00 - Project Control/Decision Log]] #004–008). They are project rules, not legal rules. No legal retention periods are asserted.
+
+| ID | Rule | Status |
+|---|---|---|
+| BR-014 | Cases are persistent and long-lived: a case and its artifacts remain available after finalization. Finalized cases and finalized documents are intended to be retained indefinitely for operational use; exact retention, archival, backup, and deletion policies remain [TO BE VALIDATED]. | [PROPOSED] |
+| BR-015 | Every case is classified by a Case Type. The MVP supports a single Case Type: LAND_RENT. Additional Case Types are future scope. | [PROPOSED] |
+| BR-016 | Case Type is distinct from a property's use purpose (agricultural/business/residential) and from document type; these concepts must not be conflated. | [PROPOSED] |
+| BR-017 | A Client is distinct from an Application User: the Client is the person/organization on whose behalf a case is processed and is not an operator of the system. | [PROPOSED] |
+| BR-018 | A Client may be associated with one or more Cases; Client records are reusable across Cases. | [PROPOSED] |
+| BR-019 | Source Documents, Generated Drafts, and Finalized Documents are distinct and non-interchangeable. Finalization is a human decision; the application does not determine legal validity. | [PROPOSED] |
 
 ---
 
@@ -1701,6 +1939,22 @@ The document generation capability will be implemented as a system component. Th
 | OQ-PS-03 | Should the system serve NRN (Non-Resident Nepali) users? |
 | OQ-PS-04 | Is there a market need for a desktop/Web version, or is mobile sufficient? |
 
+### 19.9 Case, Client, and Document Model Questions
+
+> Added in the v0.1.1 synchronization revision. These questions are also tracked in `00 - Project Control/Open Questions.md`.
+
+| ID | Question |
+|---|---|
+| OQ-CM-01 | What is the exact Case classification taxonomy beyond LAND_RENT? Which future Case Types are planned? |
+| OQ-CM-02 | How is "Agriculture" (or any similar term) classified: a Case Type, a property use purpose, or a directory/category? The Land Rent template currently treats it as a property use purpose (PROP_USE_PURPOSE), not a Case Type. |
+| OQ-CM-03 | What is the exact retention, archival, backup, and deletion policy for finalized cases and finalized documents? |
+| OQ-CM-04 | Should Source Documents be stored/associated at the Client level, the Case level, or both? |
+| OQ-CM-05 | What rules govern updating a Client's information after a Case has been finalized? |
+| OQ-CM-06 | Can finalized Cases ever be archived (moved out of the active directory)? Under what criteria? |
+| OQ-CM-07 | What are the backup requirements for Case, Client, and Source Document data? |
+| OQ-CM-08 | What is the deletion policy for Cases, Clients, and Documents? |
+| OQ-CM-09 | What is the exact access-control model (roles, permissions) for Case, Client, and Document data? |
+
 ---
 
 ## 20. Requirements Traceability
@@ -1719,6 +1973,10 @@ The document generation capability will be implemented as a system component. Th
 | Domain research | Witness requirement (candidate rule) | BR-008 | [UNVERIFIED — CANDIDATE DOMAIN RULE] |
 | Domain research | Rent threshold for written agreement (candidate rule) | BR-009 | [UNVERIFIED — CANDIDATE DOMAIN RULE] |
 | Domain research | Registration thresholds (candidate rule) | BR-010 | [UNVERIFIED — CANDIDATE DOMAIN RULE] |
+| Product decision 004 | Persistent cases; recent cases; open existing case; case metadata | FR-036, FR-037, FR-039, FR-040; BR-014 | [PROPOSED] — product decision |
+| Product decision 005 | Case Type classification; case directory | FR-035, FR-038; BR-015, BR-016 | [PROPOSED] — product decision |
+| Product decision 006 | Client management; client reuse; client source documents | FR-041 to FR-047; BR-017, BR-018 | [PROPOSED] — product decision |
+| Product decision 007, 008 | Distinct document types; human finalization authority | FR-048, FR-049; BR-019 | [PROPOSED] — product decision |
 
 ### 20.2 Requirements Without Validated Source
 
@@ -1735,26 +1993,30 @@ The document generation capability will be implemented as a system component. Th
 ## 21. Requirement Status Summary
 
 | Category | Count |
-|---|---|---|
-| Functional Requirements | 35 |
-| Non-Functional Requirements | 13 |
+|---|---|
+| Functional Requirements | 50 (FR-001..FR-049 plus FR-012a) |
+| Non-Functional Requirements | 13 (SRS §8; the [[../Non-Functional Requirements/Non-Functional Requirements|Non-Functional Requirements]] document separately maintains 26 NFRs under a different ID scheme) |
 | OCR-Specific Requirements (conditional) | 6 |
 | Document Generation Requirements | 3 |
-| Business Rules | 13 (3 candidate domain rules reclassified to [UNVERIFIED — CANDIDATE DOMAIN RULE]) |
+| Business Rules | 19 (13 original + 6 product-decision rules; 3 candidate domain rules remain [UNVERIFIED — CANDIDATE DOMAIN RULE]) |
 | Assumptions | 10 |
 | Risks | 10 |
-| Open Questions | 37 |
-| **Total Requirements (FR + NFR + OCR + DG + BR)** | **70** |
+| Open Questions | 46 |
+| **Total Requirements (FR + NFR + OCR + DG + BR)** | **91** |
+
+> Counts updated in the v0.1.1 synchronization revision (new FR-035..FR-049, BR-014..BR-019, OQ-CM-01..09). BR-014..BR-019 are product-decision business rules.
 
 ### By Status
 
+Status counts below cover FR + NFR as written in this SRS (63 requirements). Business rules are listed separately.
+
 | Status | Count (FR + NFR) |
 |---|---|
-| [CONFIRMED] | 2 (BR-001, BR-004) |
+| [CONFIRMED] | 0 (2 business rules confirmed: BR-001, BR-004) |
 | [RESEARCH-BACKED] | 0 (previously BR-008, BR-009, BR-010 — reclassified) |
-| [PROPOSED] | 37 |
-| [ASSUMPTION] | 3 (NFR-007, NFR-009 partial, AS-003 to AS-010) |
-| [TO BE VALIDATED] | 6 |
+| [PROPOSED] | 57 |
+| [ASSUMPTION] | 1 (NFR-007) |
+| [TO BE VALIDATED] | 3 (FR-011, FR-022, NFR-009) |
 | [OPEN QUESTION] | 2 (NFR-003, NFR-005) |
 | [UNVERIFIED — CANDIDATE DOMAIN RULE] | 3 (BR-008, BR-009, BR-010) — not counted in FR + NFR total |
 
@@ -1764,7 +2026,7 @@ The document generation capability will be implemented as a system component. Th
 
 ## 22. Next Steps
 
-Based on the current state of the SRS (v0.1 Working Draft), the following activities are recommended:
+Based on the current state of the SRS (v0.1.1 requirements synchronization revision), the following activities are recommended:
 
 ### Short Term (Next Actions)
 
@@ -1785,14 +2047,20 @@ Based on the current state of the SRS (v0.1 Working Draft), the following activi
    - Evaluate OCR options for Nepali (Devanagari) text.
    - Determine OCR feasibility for the MVP.
 
+5. **Validate the Case & Client model additions (FR-035..FR-049, BR-014..BR-019).**
+   - Resolve OQ-CM-01..09 (see [[Open Questions]]).
+   - Validate the classification taxonomy, retention/archival policy, and client data model with domain experts.
+
+6. **Create the traceability artifacts** for the Case, Client, and Document requirements (see `Traceability/`).
+
 ### Medium Term
 
-5. **Refine functional requirements** based on interview and template analysis findings.
-6. **Conduct targeted legal/domain research** to resolve open questions.
-7. **Update the SRS** to version 0.2 or higher.
-8. **Begin requirements validation** with domain experts and the project owner.
-9. **Baseline SRS v1.0** after sufficient validation.
+7. **Refine functional requirements** based on interview and template analysis findings.
+8. **Conduct targeted legal/domain research** to resolve open questions.
+9. **Update the SRS** to version 0.2 or higher.
+10. **Begin requirements validation** with domain experts and the project owner.
+11. **Baseline SRS v1.0** after sufficient validation.
 
 ---
 
-*End of SRS v0.1 Working Draft*
+*End of SRS v0.1.1 Working Draft*

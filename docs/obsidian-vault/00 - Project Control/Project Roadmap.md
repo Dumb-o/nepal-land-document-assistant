@@ -98,7 +98,7 @@ Some workstreams may begin early once their prerequisites are satisfied. For exa
 ---
 
 #### 0.4 — Requirements Engineering
-- **Status:** Pending
+- **Status:** In Progress (draft artifacts exist; pending review — see note below)
 - **Objective:** Elicit, categorize, and document functional requirements, non-functional requirements, and business rules derived from domain research and document analysis.
 - **Activities:**
   - Elicit functional requirements from domain workflows and document analysis
@@ -107,20 +107,24 @@ Some workstreams may begin early once their prerequisites are satisfied. For exa
   - Trace requirements back to source documents and research findings
   - Establish a requirement ID scheme
   - Review and refine requirements for consistency
+  - Synchronize requirements with product decisions (persistent Cases, Client concept, typed documents)
 - **Expected Artifacts:**
   - `03 - Requirements/Functional Requirements/`
   - `03 - Requirements/Non-Functional Requirements/`
   - `03 - Requirements/Business Rules/`
+  - `03 - Requirements/Use Cases.md`
+  - `03 - Requirements/Data Needs.md`
   - `03 - Requirements/Traceability/`
   - Updated Open Questions
   - Input to Decision Log
 - **Dependencies:** 0.2 Domain Research, 0.3 Sample Document Analysis
-- **Completion Criteria:** All requirements are captured, categorized, and reviewed. Each requirement has a unique ID, description, and source reference.
+- **Completion Criteria:** All requirements are captured, categorized, and reviewed. Each requirement has a unique ID, description, and source reference. A requirements-synchronization pass reflecting agreed product decisions has been performed.
+- **Note:** Draft requirements artifacts exist as of 2026-08-08 but are **not** baselined; they remain pending review and acceptance.
 
 ---
 
 #### 0.5 — SRS Development
-- **Status:** Pending
+- **Status:** In Progress (draft SRS exists; updated 2026-08-08 as a requirements-synchronization revision, not baselined)
 - **Objective:** Synthesize the requirements into a structured Software Requirements Specification document.
 - **Activities:**
   - Create SRS document structure following a standard template
@@ -130,7 +134,7 @@ Some workstreams may begin early once their prerequisites are satisfied. For exa
   - Document assumptions and dependencies
   - Review SRS for completeness and consistency
 - **Expected Artifacts:**
-  - `03 - Requirements/SRS/Software Requirements Specification.md`
+  - `03 - Requirements/SRS/SRS.md`
 - **Dependencies:** 0.4 Requirements Engineering
 - **Completion Criteria:** SRS document is complete and reviewed. All requirements are included and traceable.
 

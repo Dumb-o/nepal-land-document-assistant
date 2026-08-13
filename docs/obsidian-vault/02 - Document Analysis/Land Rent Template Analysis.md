@@ -78,16 +78,16 @@ Multiple variants exist (see Section 11 for full analysis):
 
 The template follows this consistent section ordering:
 
-| Section ID | Section (Nepali) | Purpose | Content Type | Notes |
-|---|---|---|---|---|
-| S01 | शीर्षक — जग्गा बहाल सम्झौता पत्र | Document title | Static | Identical across all instances |
-| S02 | लिखितम — Preamble | Party identification, legal basis, consent declaration | Static + Variable | Contains party lineage, citizenship, address |
-| S03 | तपसिल — Body/Clauses | Numbered terms and conditions | Static + Variable + Conditional | 7–9 clauses depending on variant |
-| S04 | प्रथम पक्ष हस्ताक्षर — First Party Signature | Landlord/Owner signature area | Static + Variable | Names of first party individuals |
-| S05 | दोश्रो/द्वितीय पक्ष हस्ताक्षर — Second Party Signature | Tenant signature area | Static + Variable | Name of second party individual |
-| S06 | साक्षी — Witnesses | Witness names and addresses | Static + Variable | 1–3 witnesses |
-| S07 | लेखक/मसौदाकार — Writer | Name of person who drafted the document | Variable | Sometimes same as one of the parties |
-| S08 | मिति/सम्बत — Date | Bikram Sambat date | Variable | इतिसम्बत YYYY मिति महिना GG गते रोज N |
+| Section ID | Section (Nepali)                                       | Purpose                                                | Content Type                    | Notes                                        |
+| ---------- | ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------- | -------------------------------------------- |
+| S01        | शीर्षक — जग्गा बहाल सम्झौता पत्र                       | Document title                                         | Static                          | Identical across all instances               |
+| S02        | लिखितम — Preamble                                      | Party identification, legal basis, consent declaration | Static + Variable               | Contains party lineage, citizenship, address |
+| S03        | तपसिल — Body/Clauses                                   | Numbered terms and conditions                          | Static + Variable + Conditional | 7–9 clauses depending on variant             |
+| S04        | प्रथम पक्ष हस्ताक्षर — First Party Signature           | Landlord/Owner signature area                          | Static + Variable               | Names of first party individuals             |
+| S05        | दोश्रो/द्वितीय पक्ष हस्ताक्षर — Second Party Signature | Tenant signature area                                  | Static + Variable               | Name of second party individual              |
+| S06        | साक्षी — Witnesses                                     | Witness names and addresses                            | Static + Variable               | 1–3 witnesses                                |
+| S07        | लेखक/मसौदाकार — Writer                                 | Name of person who drafted the document                | Variable                        | Sometimes same as one of the parties         |
+| S08        | मिति/सम्बत — Date                                      | Bikram Sambat date                                     | Variable                        | इतिसम्बत YYYY मिति महिना GG गते रोज N        |
 
 ---
 

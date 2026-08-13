@@ -5,7 +5,7 @@
 
 ## Purpose
 
-The Nepal Land Document Assistant project aims to research, design, and build a system that assists with processing land-related documents in Nepal. This includes understanding domain-specific workflows, document formats, OCR requirements, and document generation needs.
+The Nepal Land Document Assistant project aims to research, design, and build a system that assists with preparing and managing land-related documents in Nepal. The product is centered on persistent, classified **Cases** (MVP: Land Rent/Lease) that reference reusable **Clients** and distinguish between **Source Documents**, **Generated Drafts**, and **Finalized Documents**. This includes understanding domain-specific workflows, document formats, OCR requirements, and document generation needs.
 
 ## Scope
 
@@ -15,6 +15,7 @@ The Nepal Land Document Assistant project aims to research, design, and build a 
 - Define functional and non-functional requirements
 - Produce UML models and system designs
 - Document all architectural decisions
+- Model persistent Cases (with Case Type classification), reusable Clients, and typed documents (Source / Generated Draft / Finalized) as first-class concepts (see [[Decision Log]] #004–008)
 
 ## Out of Scope (Phase 0)
 

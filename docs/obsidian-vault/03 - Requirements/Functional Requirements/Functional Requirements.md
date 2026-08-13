@@ -5,14 +5,14 @@
 > This document defines the functional requirements for the **Nepal Land Document Assistant — Land-Rent Document Preparation Module** MVP.
 >
 > These requirements are derived from:
-> - **Use Cases** (`03 - Requirements/Use Cases.md`) — primary behavioral source (UC-001..UC-016)
-> - **Data Needs** (`03 - Requirements/Business Rules/Data Needs.md`) — field-level data requirements (DN-*)
-> - **Business Rules** (`03 - Requirements/Business Rules/Business Rules.md`) — behavioral rules (BR-001..BR-036)
+> - **Use Cases** (`03 - Requirements/Use Cases.md`) — primary behavioral source (UC-001..UC-021)
+> - **Data Needs** (`03 - Requirements/Data Needs.md`) — field-level data requirements (DN-*)
+> - **Business Rules** (`03 - Requirements/Business Rules/Business Rules.md`) — behavioral rules (BR-001..BR-052)
 > - **Land Rent Template Analysis** (`02 - Document Analysis/Land Rent Template Analysis.md`) — template structure, conditional content, calculations
 > - **Land Rent Field Dictionary** (Template Analysis §4.1) — actual template fields (P1_*, P2_*, PROP_*, RENT_*, WITNESS_*, etc.)
 > - **Existing SRS** (`03 - Requirements/SRS/SRS.md`) — legacy FR-001..FR-034, DG-001..003, OCR-001..006, BR-001..013
 >
-> **Relationship to the SRS:** The SRS (v0.1) is **not modified** by this task. Legacy SRS requirement IDs are preserved and explicitly mapped to the new IDs below (see §2). A separate consolidation pass will later revise the SRS.
+> **Relationship to the SRS:** On 2026-08-08 the SRS was revised as a **requirements-synchronization revision (v0.1.1)** reflecting agreed product decisions (persistent Cases, Case Type, Client concept, typed documents). Legacy SRS requirement IDs are preserved and mapped to the new IDs below (see §2). The SRS remains a working draft and is **not baselined**.
 
 ---
 
@@ -70,7 +70,29 @@ The new FR-LR identifiers supersede the legacy SRS FR/DG/OCR identifiers. The ma
 | DG-001           | FR-LR-023, FR-LR-024 | Template-based generation                     |
 | DG-002           | FR-LR-028            | Nepali language                               |
 | DG-003           | FR-LR-031            | Printable output format                       |
-| OCR-001..OCR-006 | FR-LR-105..FR-LR-108 | OCR-specific — **DEFERRED**                   |
+| OCR-001..OCR-006 | FR-LR-105..FR-LR-108 | OCR-specific — **DEFERRED** |
+
+### New requirements added 2026-08-08 (product decisions 004–008)
+
+The following new FR-LR requirements were added to reflect agreed product decisions. They map to new SRS requirements (FR-035..FR-049) introduced in the SRS v0.1.1 synchronization revision:
+
+| New FR-LR ID | New SRS ID | Product Decision |
+|---|---|---|
+| FR-LR-049 (Assign Case Type) | FR-035 | Decision 005 |
+| FR-LR-050 (Persist Cases After Finalization) | FR-036 | Decision 004 |
+| FR-LR-051 (Recent Cases Landing View) | FR-037 | Decision 004 |
+| FR-LR-052 (Open Existing Case) | FR-039 | Decision 004 |
+| FR-LR-053 (Browse/Organize Cases by Case Type) | FR-038 | Decision 005 |
+| FR-LR-054 (Maintain Case Metadata) | FR-040 | Decision 004 |
+| FR-LR-055 (Create Client) | FR-041 | Decision 006 |
+| FR-LR-056 (View Client) | FR-042 | Decision 006 |
+| FR-LR-057 (Search Clients) | FR-043 | Decision 006 |
+| FR-LR-058 (Associate Client with Case) | FR-044 | Decision 006 |
+| FR-LR-059 (Reuse Client Across Cases) | FR-045 | Decision 006 |
+| FR-LR-060 (View Client's Cases) | FR-046 | Decision 006 |
+| FR-LR-061 (Manage Client Source Documents) | FR-047 | Decisions 006, 007 |
+| FR-LR-062 (Distinguish Document Types) | FR-048 | Decision 007 |
+| FR-LR-063 (Only Human-Finalized Documents Are Finalized) | FR-049 | Decisions 007, 008 |
 
 ---
 
@@ -157,7 +179,7 @@ The system must support managing who has access.
 ### FR-LR-004 — Create Case
 
 **Requirement:**
-The operator shall be able to create a new case for each land-rent document preparation instance.
+The operator shall be able to create a new case for each land-rent document preparation instance. Case creation assigns the case's **Case Type** (see FR-LR-049); the MVP supports LAND_RENT only.
 
 **Priority:** MUST
 
@@ -165,16 +187,18 @@ The operator shall be able to create a new case for each land-rent document prep
 
 **Source:**
 - UC-002
-- BR-005
-- DN-CASE-01, DN-CASE-03
+- BR-005, BR-041, BR-049
+- DN-CASE-01, DN-CASE-03, DN-CASE-06
 - Legacy SRS FR-004
 
 **Rationale:**
-Cases provide the organizing structure for all related information and documents.
+Cases provide the organizing structure for all related information and documents. Case classification supports organization and retrieval.
 
 **Acceptance Criteria:**
 - An authenticated operator can initiate a new case.
+- The operator selects the Case Type (LAND_RENT for the MVP).
 - Creating a case does not require any data entry to succeed.
+- Creating a case does not require a source document or OCR/extraction to succeed (BR-049/BR-050; §2.7 acquisition paths). A case may be created and populated entirely through manual entry.
 - The new case is immediately available for data entry.
 
 ---
@@ -296,12 +320,156 @@ Operators may need to record client-specific information not captured in structu
 
 ---
 
+### FR-LR-049 — Assign Case Type
+
+**Requirement:**
+Each case shall be assigned a Case Type at creation. The MVP supports a single Case Type: LAND_RENT. Additional Case Types are future scope.
+
+**Priority:** MUST
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-002
+- BR-041, BR-042
+- DN-CTYPE-01, DN-CASE-06
+- SRS FR-035 (v0.1.1)
+
+**Rationale:**
+Case Type classifies a case and determines its workflow and document requirements (Decision 005). Case Type is distinct from a property's use purpose and from document type.
+
+**Acceptance Criteria:**
+- The operator selects a Case Type when creating a case.
+- The MVP offers LAND_RENT as the Case Type.
+- The selected Case Type is displayed and searchable with the case.
+
+---
+
+### FR-LR-050 — Persist Cases After Finalization
+
+**Requirement:**
+Cases shall persist after finalization. Finalized cases and finalized documents are intended to be retained indefinitely for operational use. Exact retention, archival, backup, and deletion policies are [TO BE VALIDATED].
+
+**Priority:** MUST
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-003, UC-014
+- BR-039, BR-040
+- DN-CASE-09, DN-LIFE-06
+- SRS FR-036 (v0.1.1)
+
+**Rationale:**
+A case and its artifacts must remain available after finalization for operational use (Decision 004). No legal retention period is asserted here.
+
+**Acceptance Criteria:**
+- A finalized case remains openable and retrievable after finalization.
+- Finalized documents within the case remain retrievable.
+- Retention/archival/backup/deletion policy is recorded as [TO BE VALIDATED], not asserted.
+
+---
+
+### FR-LR-051 — Provide Recent Cases Landing View
+
+**Requirement:**
+The system shall present a Recent Cases view as the post-authentication landing experience, from which the operator can open an existing case, create a new case, and access the broader case directory.
+
+**Priority:** SHOULD
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-003
+- SRS FR-037 (v0.1.1)
+
+**Rationale:**
+Recent Cases is the primary post-auth experience (Decision 004): open existing or create new.
+
+**Acceptance Criteria:**
+- After authentication, the operator lands on a Recent Cases view.
+- The view offers "New Case" and "open existing case" actions.
+- The operator can navigate to the broader case directory from the landing view.
+
+---
+
+### FR-LR-052 — Open Existing Case
+
+**Requirement:**
+The operator shall be able to open an existing case (including finalized cases) to view or resume its contents.
+
+**Priority:** MUST
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-003, UC-014
+- SRS FR-039 (v0.1.1)
+
+**Rationale:**
+Operators resume in-progress cases and reference finalized cases (Decision 004).
+
+**Acceptance Criteria:**
+- Any case the operator is authorized to view can be opened.
+- Finalized cases can be opened and their finalized documents retrieved.
+- In-progress cases reopen at their current workflow state.
+
+---
+
+### FR-LR-053 — Browse and Organize Cases by Case Type
+
+**Requirement:**
+The system shall allow authorized users to organize, browse, and retrieve cases by Case Type and other supported classification criteria.
+
+**Priority:** SHOULD
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-003, UC-014
+- BR-041
+- SRS FR-038 (v0.1.1)
+
+**Rationale:**
+A case directory supports organizing, browsing, and retrieving cases by classification (Decision 005). No specific navigation hierarchy is prescribed by this requirement.
+
+**Acceptance Criteria:**
+- Cases can be filtered/grouped by Case Type.
+- The operator can browse all cases (broader directory) from the landing view.
+- Additional classification criteria are [TO BE VALIDATED] with domain experts.
+
+---
+
+### FR-LR-054 — Maintain Case Metadata
+
+**Requirement:**
+The system shall maintain per-case metadata: Case ID, Case Type, Status, Creation date, Last updated, associated Clients, Property, Source Documents, Generated Documents, and Finalized Documents.
+
+**Priority:** MUST
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-002, UC-003
+- DN-CASE-01..09, DN-CLI, DN-PROP, DN-SRC, DN-GEN
+- SRS FR-040 (v0.1.1)
+
+**Rationale:**
+Complete case metadata supports retrieval, organization, and operational use of persistent cases (Decision 004).
+
+**Acceptance Criteria:**
+- Case metadata is recorded and viewable.
+- Last-updated is maintained automatically.
+- Associated clients, property, source documents, generated drafts, and finalized documents are linked to the case.
+
+---
+
 ### 3.3 Manual Data Entry
 
 ### FR-LR-010 — Enter Party Information
 
 **Requirement:**
-The operator shall be able to manually enter First Party (landowner) and Second Party (tenant) identity information as defined by the Field Dictionary, including full name, grandfather's name, father's name, district, municipality, ward, age, and citizenship details.
+The operator shall be able to manually enter First Party (landowner) and Second Party (tenant) identity information as defined by the Field Dictionary, including full name, grandfather's name, father's name, district, municipality, ward, age, and citizenship details. This is a first-class acquisition path (§2.7 path 3), not a fallback: it must fully support parties who supply no source document (e.g., a tenant who provides information verbally).
 
 **Priority:** MUST
 
@@ -310,14 +478,17 @@ The operator shall be able to manually enter First Party (landowner) and Second 
 **Source:**
 - UC-005
 - DN-P1-01..DN-P1-10, DN-P2-01..DN-P2-10
+- BR-048, BR-049, BR-051
 - Field Dictionary: P1_FULL_NAME..P1_CITIZENSHIP_DIST, P2_FULL_NAME..P2_CITIZENSHIP_DIST
 - Legacy SRS FR-019
 
 **Rationale:**
-Party identity information is the core variable content of the land-rent preamble. Manual entry is the primary MVP acquisition mechanism.
+Party identity information is the core variable content of the land-rent preamble. Manual entry is the primary MVP acquisition mechanism. It must not depend on the presence of a source document or on OCR.
 
 **Acceptance Criteria:**
 - Operator can enter all individual-party fields defined in DN-P1 and DN-P2.
+- Values may be entered in **Nepali Unicode** (Devanagari), e.g. नाम: राम बहादुर थापा; बाबुको नाम: श्याम बहादुर थापा; ठेगाना: ललितपुर महानगरपालिका वडा नं. १५ (FR-LR-064).
+- A party with **no source document** can be fully represented by manual entry (BR-049).
 - Citizenship fields (number, issue date, issue district) are accepted when present and omittable when absent.
 - Entered values are stored as Candidate Data pending verification.
 
@@ -603,22 +774,24 @@ Structured, verified data enables document generation, case retrieval, and reuse
 ### FR-LR-022 — Record Data Source and Lifecycle State
 
 **Requirement:**
-The system shall record the origin of each data value (manual entry or, in the future, automated extraction) and its lifecycle state (Candidate vs Verified).
+The system shall record the origin of each data value (manual entry, source document, or, in the future, automated extraction; and reuse from existing Client information) and its lifecycle state (Candidate vs Verified).
 
 **Priority:** SHOULD
 
 **Status:** PROPOSED
 
 **Source:**
-- DN-LIFE-01, DN-LIFE-02
+- DN-LIFE-01, DN-LIFE-02, DN-PROV
+- BR-052
 - Legacy SRS FR-020 (§9.7, §9.8)
 
 **Rationale:**
-Origin and lifecycle state support auditability and the human-verification principle.
+Origin and lifecycle state support auditability and the human-verification principle. Provenance (how each value was acquired) is internal audit/traceability metadata; it is not automatically rendered into the final document content — it appears in the document only if the template actually requires it (BR-052, Data Needs §2.7).
 
 **Acceptance Criteria:**
 - Each value is identifiable as Candidate or Verified.
-- The origin of each value is recorded where applicable.
+- The origin of each value is recorded where applicable (manual entry, source document, OCR/extraction, existing Client reuse).
+- Provenance is available for review/traceability but is not automatically inserted into the generated document (BR-052).
 - Whether original Candidate values are retained permanently is [OPEN QUESTION].
 
 ---
@@ -636,7 +809,8 @@ The system shall generate a land-rent document draft using Verified Case Data an
 
 **Source:**
 - UC-011
-- BR-016, BR-017
+- BR-016, BR-017, BR-051
+- DN-VER, DN-GEN, DN-VAR
 - Legacy SRS FR-021, DG-001
 
 **Rationale:**
@@ -645,6 +819,7 @@ Template-based document generation is the primary value proposition of the syste
 **Acceptance Criteria:**
 - Draft generation is available only when Verified Case Data exists.
 - The draft is generated from the selected template populated with Verified Case Data.
+- Generation is **source-agnostic**: it uses Verified Case Data regardless of whether each value was obtained by manual entry, OCR/extraction, a source document, or reuse from an existing Client record (§2.7; BR-051). No acquisition path is a precondition for generation.
 - Draft generation records template identity, template version, and generation timestamp.
 
 ---
@@ -1252,19 +1427,298 @@ Case data and finalized documents must be accessible only to authorized operator
 
 ---
 
+### 3.10 Client Management
+
+> A **Client** is the person or organization on whose behalf a case is processed — distinct from the **Application User** (operator). Client records are reusable across cases (Decision 006). Client fields reuse the Field Dictionary party identity fields; no new fields are invented without validation.
+
+### FR-LR-055 — Create Client
+
+**Requirement:**
+The operator shall be able to create a Client record containing the client's identity information (reusing the Field Dictionary party fields: name, lineage, address, citizenship details; organization details where applicable).
+
+**Priority:** MUST
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-017
+- BR-043
+- DN-CLI-01..DN-CLI-10
+- SRS FR-041 (v0.1.1)
+
+**Rationale:**
+Clients are reusable domain entities (Decision 006).
+
+**Acceptance Criteria:**
+- An authenticated operator can create a client record.
+- Client identity fields match the Field Dictionary party fields (no invented fields).
+- A client record is stored for reuse across cases.
+
+---
+
+### FR-LR-056 — View Client
+
+**Requirement:**
+The operator shall be able to view a Client's stored information.
+
+**Priority:** MUST
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-018
+- BR-037, BR-043
+- DN-CLI
+- SRS FR-042 (v0.1.1)
+
+**Rationale:**
+Operators need to review client information (Decision 006).
+
+**Acceptance Criteria:**
+- An authorized operator can open a client record.
+- Client records are not exposed to unauthorized users.
+
+---
+
+### FR-LR-057 — Search Clients
+
+**Requirement:**
+[PROPOSED] The operator shall be able to search for Client records (e.g., by name, citizenship number, or other supported criteria).
+
+**Priority:** SHOULD
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-018
+- DN-CLI-01, DN-CLI-07
+- SRS FR-043 (v0.1.1)
+
+**Rationale:**
+Locating existing clients enables reuse and avoids duplicate records (Decision 006).
+
+**Acceptance Criteria:**
+- Search by name and citizenship number returns matching clients where supported.
+- Search criteria are [TO BE VALIDATED] with domain experts.
+
+---
+
+### FR-LR-058 — Associate Client with Case
+
+**Requirement:**
+The operator shall be able to associate a Client with a Case. Client information may pre-fill the case's party fields.
+
+**Priority:** MUST
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-019
+- BR-044
+- DN-CASE-08
+- SRS FR-044 (v0.1.1)
+
+**Rationale:**
+A case is processed on behalf of one or more clients (Decision 006).
+
+**Acceptance Criteria:**
+- A client can be associated with a case.
+- A case can reference one or more clients.
+- Associated client information can pre-fill party fields.
+
+---
+
+### FR-LR-059 — Reuse Client Across Cases
+
+**Requirement:**
+The operator shall be able to reuse an existing Client record across multiple Cases rather than re-entering client information.
+
+**Priority:** SHOULD
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-019
+- BR-044
+- DN-CLI, DN-CASE-08
+- SRS FR-045 (v0.1.1)
+
+**Rationale:**
+Client records are reusable (Decision 006); reuse reduces re-entry and inconsistency.
+
+**Acceptance Criteria:**
+- An existing client can be selected when creating or editing a case.
+- One client can appear in multiple cases.
+
+---
+
+### FR-LR-060 — View a Client's Cases
+
+**Requirement:**
+The operator shall be able to view the Cases associated with a given Client.
+
+**Priority:** SHOULD
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-020
+- DN-CASE-08
+- SRS FR-046 (v0.1.1)
+
+**Rationale:**
+Operators need to see all cases involving a client (Decision 006).
+
+**Acceptance Criteria:**
+- Opening a client record lists the cases associated with it.
+- Each listed case can be opened.
+
+---
+
+### FR-LR-061 — Manage Client Source Documents
+
+**Requirement:**
+[PROPOSED] The system shall allow Source Documents to be associated with a Client in addition to their Case association. Source document capture/upload itself remains deferred (see FR-LR-101..FR-LR-104); this requirement covers the association model.
+
+**Priority:** SHOULD
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-021
+- BR-045, BR-046
+- DN-SRC-04, DN-SRC-06
+- SRS FR-047 (v0.1.1)
+
+**Rationale:**
+Source documents are evidence tied to a client and/or a case (Decisions 006, 007). Whether they live at the client level, case level, or both is [OPEN QUESTION].
+
+**Acceptance Criteria:**
+- A source document can be associated with a client (where supported).
+- Source documents remain distinct from generated drafts and finalized documents.
+- Client-level vs case-level storage is resolved by the [OPEN QUESTION] before implementation.
+
+---
+
+### 3.11 Document Types (Source / Draft / Finalized)
+
+### FR-LR-062 — Distinguish Document Types
+
+**Requirement:**
+The system shall distinguish Source Documents (supplied/captured), Generated Drafts (produced, not finalized), and Finalized Documents (explicitly finalized by a human) as separate, non-interchangeable document types.
+
+**Priority:** MUST
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-021, UC-013, UC-011
+- BR-045
+- DN-GEN-01, DN-SRC
+- SRS FR-048 (v0.1.1)
+
+**Rationale:**
+The three document types are distinct and not interchangeable (Decision 007).
+
+**Acceptance Criteria:**
+- Each document in the system is typed as Source, Draft, or Finalized.
+- Document type is displayed and cannot be silently changed.
+- Draft and Finalized documents are distinguishable from source documents.
+
+---
+
+### FR-LR-063 — Only Human-Finalized Documents Are Finalized
+
+**Requirement:**
+The system shall not present a Source Document or a Generated Draft as a Finalized Document. Only a document explicitly finalized by an authorized human is a Finalized Document, and the system does not imply legal validity.
+
+**Priority:** MUST
+
+**Status:** CONFIRMED
+
+**Source:**
+- UC-013, UC-021
+- BR-038, BR-047
+- DN-GEN-01
+- SRS FR-049 (v0.1.1)
+
+**Rationale:**
+Finalization is a human decision (Decisions 007, 008; Human Authority Principle).
+
+**Acceptance Criteria:**
+- Only explicitly finalized documents are labeled Finalized.
+- The system never labels a draft or source document as finalized.
+- No system-generated indication of legal validity is presented.
+
+---
+
+### FR-LR-064 — Enter Nepali Unicode Text
+
+**Requirement:**
+The system shall support entry and storage of Nepali Unicode (Devanagari) text for all manually entered values (party names, addresses, property details, terms). Example values: नाम: राम बहादुर थापा; बाबुको नाम: श्याम बहादुर थापा; ठेगाना: ललितपुर महानगरपालिका वडा नं. १५.
+
+**Priority:** MUST
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-005
+- BR-048
+- Data Needs §2.7 (path 3); FR-LR-028
+- Field Dictionary: P1_*, P2_*, PROP_*, RENT_* (all Nepali template fields)
+
+**Rationale:**
+All template content and real-world data are in Nepali/Devanagari (FR-LR-028). Manual entry must be able to reproduce that data. This is a functional/data-acquisition requirement; the keyboard/IME mechanism (e.g., Roman-transliteration IME, Unicode layout) is an implementation choice and is not prescribed.
+
+**Acceptance Criteria:**
+- Operator can type and store Devanagari values (including Devanagari digits such as १५) in every manually entered field.
+- Entered Nepali values round-trip correctly into the generated Nepali document.
+- Mixed script is supported (e.g., Nepali names with English numerals where applicable), consistent with template evidence.
+- The requirement is satisfied regardless of which keyboard/IME the operator uses.
+
+---
+
+### FR-LR-065 — Support Mixed Acquisition Across a Case
+
+**Requirement:**
+The system shall allow a single case to acquire its values through different paths: some fields entered manually, some read from source documents, some (where OCR is available) extracted as Candidate Data, and some pre-filled from existing Client information. No requirement exists that all fields share one acquisition path.
+
+**Priority:** MUST
+
+**Status:** PROPOSED
+
+**Source:**
+- UC-005, UC-009, UC-010, UC-017..UC-020
+- BR-048..BR-051
+- Data Needs §2.7 (path 4), §7.4
+- DN-EXT, DN-VER, DN-LIFE-01/02
+
+**Rationale:**
+In practice party information arrives through mixed channels (e.g., landlord's name OCR'd from a citizenship certificate, address manually corrected, contact entered manually; tenant entirely manual with no document). Each value must be independently acquirable and verifiable.
+
+**Acceptance Criteria:**
+- Each case field can be independently populated by manual entry, source-document reading, OCR Candidate Data (where available), or Client reuse.
+- A field's acquisition path does not constrain any other field's path.
+- All paths converge on the same Candidate → Review → Verified lifecycle (§2.7; FR-LR-019/020/021).
+- Document generation treats all paths equally once values are Verified (FR-LR-023).
+
+---
+
 ## 4. MVP Functional Requirements Summary
 
 | Category | FR IDs |
 |---|---|
 | Authentication and Authorization | FR-LR-001..FR-LR-003 |
-| Case Management | FR-LR-004..FR-LR-009 |
-| Manual Data Entry | FR-LR-010..FR-LR-018 |
+| Case Management | FR-LR-004..FR-LR-009, FR-LR-049..FR-LR-054 |
+| Manual Data Entry | FR-LR-010..FR-LR-018, FR-LR-064, FR-LR-065 |
 | Review and Verification | FR-LR-019..FR-LR-022 |
 | Document Generation | FR-LR-023..FR-LR-031 |
 | Draft Review and Finalization | FR-LR-032..FR-LR-037 |
 | Storage and Retrieval | FR-LR-038..FR-LR-041 |
 | Audit and Template Management | FR-LR-042..FR-LR-043 |
 | Error and Exception Behavior | FR-LR-044..FR-LR-048 |
+| Client Management | FR-LR-055..FR-LR-061 |
+| Document Types (Source / Draft / Finalized) | FR-LR-062..FR-LR-063 |
 
 ---
 
@@ -1273,21 +1727,26 @@ Case data and finalized documents must be accessible only to authorized operator
 | Use Case | Functional Requirement(s) | Data Need(s) | Business Rule(s) |
 |---|---|---|---|
 | UC-001 Authenticate | FR-LR-001, FR-LR-002 | — | BR-003 |
-| UC-002 Create a Case | FR-LR-004, FR-LR-005, FR-LR-006 | DN-CASE-01, DN-CASE-03 | BR-005 |
-| UC-003 View Case List and Status | FR-LR-007, FR-LR-008 | DN-CASE-02 | — |
-| UC-004 Capture/Upload Source Documents | FR-LR-101..FR-LR-104 (DEFERRED) | DN-SRC | BR-007 |
-| UC-005 Enter Party Information | FR-LR-010, FR-LR-011, FR-LR-012 | DN-P1, DN-P2 | BR-030, BR-031 |
+| UC-002 Create a Case | FR-LR-004, FR-LR-005, FR-LR-006, FR-LR-049, FR-LR-054 | DN-CASE-01, DN-CASE-03, DN-CASE-06 | BR-005, BR-041, BR-049 |
+| UC-003 View Recent Cases, Case List, and Status | FR-LR-007, FR-LR-008, FR-LR-051, FR-LR-052, FR-LR-053 | DN-CASE-02 | BR-039, BR-040 |
+| UC-004 Capture/Upload Source Documents | FR-LR-101..FR-LR-104 (DEFERRED) | DN-SRC | BR-007, BR-046 |
+| UC-005 Enter Party Information | FR-LR-010, FR-LR-011, FR-LR-012, FR-LR-064, FR-LR-065 | DN-P1, DN-P2 | BR-030, BR-031, BR-048, BR-049, BR-051 |
 | UC-006 Enter Property Information | FR-LR-013 | DN-PROP | BR-020 |
 | UC-007 Enter Rental and Term Information | FR-LR-014, FR-LR-015 | DN-RENT | BR-022, BR-024..BR-026 |
 | UC-008 Enter Witnesses and Writer | FR-LR-016 | DN-WIT, DN-WRI | BR-034 |
-| UC-009 Automatically Extract Data | FR-LR-105..FR-LR-108 (DEFERRED) | DN-LIFE-01 | BR-014 |
-| UC-010 Verify Candidate Data | FR-LR-019, FR-LR-020, FR-LR-021, FR-LR-022, FR-LR-044 | DN-LIFE-01, DN-LIFE-02 | BR-014, BR-016 |
-| UC-011 Generate Document Draft | FR-LR-023..FR-LR-031, FR-LR-046 | DN-DOC, DN-RENT-02 | BR-016, BR-017, BR-019..BR-033 |
+| UC-009 Automatically Extract Data | FR-LR-105..FR-LR-108 (DEFERRED), FR-LR-065 | DN-LIFE-01 | BR-014, BR-050 |
+| UC-010 Verify Candidate Data | FR-LR-019, FR-LR-020, FR-LR-021, FR-LR-022, FR-LR-044, FR-LR-065 | DN-LIFE-01, DN-LIFE-02 | BR-014, BR-016, BR-050 |
+| UC-011 Generate Document Draft | FR-LR-023..FR-LR-031, FR-LR-046 | DN-DOC, DN-RENT-02 | BR-016, BR-017, BR-019..BR-033, BR-051, BR-052 |
 | UC-012 Review and Edit Draft | FR-LR-032, FR-LR-033 | — | BR-001, BR-018 |
-| UC-013 Finalize Document | FR-LR-034..FR-LR-039, FR-LR-045, FR-LR-047 | DN-CASE-04, DN-LIFE-04 | BR-001, BR-002, BR-004, BR-006 |
-| UC-014 Search and Retrieve Past Cases | FR-LR-040, FR-LR-041, FR-LR-048 | DN-CASE-01 | BR-003, BR-015 |
+| UC-013 Finalize Document | FR-LR-034..FR-LR-039, FR-LR-045, FR-LR-047, FR-LR-062, FR-LR-063 | DN-CASE-04, DN-LIFE-04, DN-GEN-01 | BR-001, BR-002, BR-004, BR-006, BR-038, BR-047 |
+| UC-014 Search and Retrieve Past Cases | FR-LR-040, FR-LR-041, FR-LR-048, FR-LR-052, FR-LR-053 | DN-CASE-01 | BR-003, BR-015, BR-039, BR-040 |
 | UC-015 Manage Operator Accounts | FR-LR-003 | — | — |
 | UC-016 Update Document Template | FR-LR-043 | DN-DOC-05 | — |
+| UC-017 Create Client | FR-LR-055, FR-LR-065 | DN-CLI | BR-043, BR-049 |
+| UC-018 View and Search Clients | FR-LR-056, FR-LR-057 | DN-CLI | BR-037, BR-043 |
+| UC-019 Associate Client with a Case | FR-LR-058, FR-LR-059 | DN-CASE-08, DN-CLI | BR-044 |
+| UC-020 View a Client's Cases | FR-LR-060 | DN-CASE-08 | BR-044 |
+| UC-021 Manage Client Source Documents | FR-LR-061, FR-LR-062, FR-LR-063 | DN-SRC-06, DN-GEN-01 | BR-045, BR-046 |
 
 ---
 
@@ -1343,12 +1802,29 @@ Case data and finalized documents must be accessible only to authorized operator
 | FR-LR-046 | UC-011 | DN-LIFE-02 | BR-016, BR-017 | — | SHOULD | PROPOSED |
 | FR-LR-047 | UC-013 | DN-LIFE-04 | — | — | SHOULD | PROPOSED |
 | FR-LR-048 | UC-014 | DN-CASE-01 | BR-003, BR-015 | — | MUST | PROPOSED |
+| FR-LR-049 | UC-002 | DN-CTYPE-01, DN-CASE-06 | BR-041, BR-042 | — | MUST | PROPOSED |
+| FR-LR-050 | UC-003, UC-014 | DN-CASE-09, DN-LIFE-06 | BR-039, BR-040 | — | MUST | PROPOSED |
+| FR-LR-051 | UC-003 | — | — | — | SHOULD | PROPOSED |
+| FR-LR-052 | UC-003, UC-014 | DN-CASE-01 | BR-039 | — | MUST | PROPOSED |
+| FR-LR-053 | UC-003, UC-014 | DN-CTYPE-01 | BR-041 | — | SHOULD | PROPOSED |
+| FR-LR-054 | UC-002, UC-003 | DN-CASE-01..09 | — | — | MUST | PROPOSED |
+| FR-LR-055 | UC-017 | DN-CLI-01..10 | BR-043 | P1_*, P2_* identity fields | MUST | PROPOSED |
+| FR-LR-056 | UC-018 | DN-CLI | BR-037, BR-043 | — | MUST | PROPOSED |
+| FR-LR-057 | UC-018 | DN-CLI-01, DN-CLI-07 | — | — | SHOULD | PROPOSED |
+| FR-LR-058 | UC-019 | DN-CASE-08 | BR-044 | — | MUST | PROPOSED |
+| FR-LR-059 | UC-019 | DN-CLI, DN-CASE-08 | BR-044 | — | SHOULD | PROPOSED |
+| FR-LR-060 | UC-020 | DN-CASE-08 | BR-044 | — | SHOULD | PROPOSED |
+| FR-LR-061 | UC-021 | DN-SRC-06 | BR-045, BR-046 | Source documents | SHOULD | PROPOSED |
+| FR-LR-062 | UC-013, UC-021 | DN-GEN-01, DN-SRC | BR-045 | — | MUST | PROPOSED |
+| FR-LR-063 | UC-013, UC-021 | DN-GEN-01 | BR-038, BR-047 | — | MUST | CONFIRMED |
+| FR-LR-064 | UC-005 | DN-P1, DN-P2 | BR-048 | P1_*, P2_* | MUST | PROPOSED |
+| FR-LR-065 | UC-005, UC-009, UC-010, UC-017 | DN-P1, DN-P2, DN-PROP, DN-RENT, DN-EXT, DN-VER | BR-048..BR-051 | — | MUST | PROPOSED |
 
 ---
 
 ## 7. Future / Deferred Functional Requirements
 
-> The following capabilities already appear in the project documentation (SRS v0.1 and/or Template Analysis) but are **deferred** and **not MVP requirements**. Their status is **FUTURE** unless the project later decides otherwise. The MVP must remain fully useful without them.
+> The following capabilities already appear in the project documentation (SRS v0.1 and/or Template Analysis) but are **deferred** and **not MVP requirements**. Their status is **FUTURE** unless the project later decides otherwise. The MVP must remain fully useful without them. Deferring these capabilities does **not** imply that source documents are required: a case can be created and a document generated entirely from verified manually entered data (BR-049, BR-051, FR-LR-004/023/064/065).
 
 | FR ID | Requirement | Legacy Source | Rationale for Deferral |
 |---|---|---|---|
@@ -1401,6 +1877,16 @@ The following issues were identified during review and are recorded rather than 
 | ID | Issue |
 |---|---|
 | FR-LR-027, FR-LR-028, FR-LR-033, FR-LR-041 | Marked TO BE VALIDATED — escalation formulas, language/formatting, draft editing extent, and search criteria all require domain expert confirmation. |
+| FR-LR-057 | Client search criteria [TO BE VALIDATED] with domain experts. |
+| FR-LR-061 | Client source-document association is PROPOSED; whether source documents are stored at client level, case level, or both is [OPEN QUESTION]. |
+
+### 2026-08-08 Synchronization Notes
+| ID | Issue |
+|---|---|
+| FR-LR-101..104 vs FR-LR-061 | Source document capture/upload remains **DEFERRED**, while FR-LR-061 (client source-document association) is added as a model/association requirement. They do not conflict (association can be metadata-only), but the interplay must be confirmed before implementation. |
+| Header note revision | The earlier "SRS is not modified by this task" statement was revised because the SRS was updated on 2026-08-08 as a synchronization revision (v0.1.1), still not baselined. |
+| Case Type vs use purpose | FR-LR-049 (Case Type = LAND_RENT) and DN-PROP-06 / BR-027..BR-028 (use purpose = agriculture/business/residence) are distinct concepts; FR-LR-025 and BR-042 state this distinction to prevent conflation. |
+| Client vs Application User | FR-LR-055..FR-LR-060 (Client management) are distinct from FR-LR-001..FR-LR-003 (Application User accounts); BR-043 records the distinction. |
 
 ### Requirements That May Belong Elsewhere
 | ID | Issue |
