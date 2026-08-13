@@ -22,7 +22,7 @@
 - **Priority levels:** MUST / SHOULD / COULD / FUTURE.
 - **Status levels:** CONFIRMED / PROPOSED / TO BE VALIDATED / OPEN QUESTION.
 - **MVP scope:** The MVP is a manual, human-in-the-loop land-rent document preparation workflow. It does **not** include OCR, AI-based extraction, automated document classification, government API integration, automated legal determination, blockchain, complex workflow automation, or advanced analytics. Capabilities that already appear in the project documentation but are outside the MVP are listed in §15 (Future / Deferred Functional Requirements).
-- **Terminology:** Consistent with the SRS — "Verified Case Data", "Candidate Data", "Draft", "Finalized System Record". The system does not independently determine legal validity.
+- **Terminology:** Consistent with the SRS — "Verified Case Data", "Candidate Data", "Draft", "Finalized Document". The system does not independently determine legal validity.
 
 ---
 
@@ -276,7 +276,7 @@ Operators need visibility into their active and past cases.
 ### FR-LR-008 — Track Case Status Through Lifecycle
 
 **Requirement:**
-[PROPOSED] The system shall track the status of each case through its lifecycle (e.g., Created, Data Collection, Verification, Draft Generated, Review, Finalized, Archived/Closed).
+[PROPOSED] The system shall track the status of each case through its lifecycle (e.g., Created, In Progress, Draft Generated, Under Review, Finalized, Persistent).
 
 **Priority:** SHOULD
 
@@ -1073,7 +1073,7 @@ The operator may need to adjust formatting, phrasing, or add notes not covered b
 ### FR-LR-034 — Perform Explicit Finalization
 
 **Requirement:**
-The operator shall explicitly perform a finalization action to transition a document from Draft to Finalized System Record.
+The operator shall explicitly perform a finalization action to transition a document from Draft to Finalized Document.
 
 **Priority:** MUST
 
@@ -1090,14 +1090,14 @@ Finalization is the gate between draft and completed document. It is a deliberat
 **Acceptance Criteria:**
 - Finalization requires an explicit, deliberate operator action.
 - The system confirms the operator's intent to finalize.
-- Finalization transitions the document to Finalized System Record.
+- Finalization transitions the document to Finalized Document.
 
 ---
 
 ### FR-LR-035 — Distinguish Draft from Finalized Document
 
 **Requirement:**
-The system shall clearly distinguish Draft documents from Finalized System Records.
+The system shall clearly distinguish Draft documents from Finalized Documents.
 
 **Priority:** MUST
 
@@ -1144,7 +1144,7 @@ Audit trail for completed documents.
 ### FR-LR-037 — Prevent Modification of Finalized Records
 
 **Requirement:**
-After finalization, the Finalized System Record shall not be directly editable. Any revision must create a new version or a new case, preserving the original finalized record.
+After finalization, the Finalized Document shall not be directly editable. Any revision must create a new version or a new case, preserving the original finalized record.
 
 **Priority:** MUST
 
@@ -1170,7 +1170,7 @@ Finalized documents must be protected from accidental or unauthorized modificati
 ### FR-LR-038 — Persist Finalized Documents
 
 **Requirement:**
-The system shall persistently retain Finalized System Records in a format suitable for printing and delivery.
+The system shall persistently retain Finalized Documents in a format suitable for printing and delivery.
 
 **Priority:** MUST
 
@@ -1185,7 +1185,7 @@ The system shall persistently retain Finalized System Records in a format suitab
 Finalized documents must be available for delivery and record-keeping.
 
 **Acceptance Criteria:**
-- Finalized System Records are persisted and survive session restarts.
+- Finalized Documents are persisted and survive session restarts.
 - Finalized records are retrievable for printing and delivery.
 
 ---
@@ -1193,7 +1193,7 @@ Finalized documents must be available for delivery and record-keeping.
 ### FR-LR-039 — Associate Finalized Document with Case
 
 **Requirement:**
-The system shall associate each Finalized System Record with its originating case for retrieval.
+The system shall associate each Finalized Document with its originating case for retrieval.
 
 **Priority:** MUST
 
@@ -1833,7 +1833,7 @@ In practice party information arrives through mixed channels (e.g., landlord's n
 | FR-LR-103 | Operator-assigned document type labeling for source documents. | SRS FR-011; UC-004 | Depends on source document handling, deferred with capture/upload. |
 | FR-LR-104 | Viewing all captured/uploaded source documents for a case. | SRS FR-012; UC-004 | Depends on source document handling. |
 | FR-LR-105 | OCR text recognition of printed Nepali (Devanagari) and English text in source documents. | SRS FR-013, OCR-002, OCR-003; UC-009 | Subject to Phase 0.8 Technical Research; MVP does not require OCR. |
-| FR-LR-106 | Automated field extraction from recognized text into Candidate Data. | SRS FR-013; UC-009 | Feasibility/accuracy not established; manual entry is the fallback. |
+| FR-LR-106 | Automated field extraction from recognized text into Candidate Data. | SRS FR-013; UC-009 | Feasibility/accuracy not established; manual entry is the primary path (Decision 009). |
 | FR-LR-107 | Presenting extracted data as Candidate Data for human verification. | SRS FR-014, OCR-004 | Applies only if extraction is implemented; the verification principle (FR-LR-019) applies in all cases. |
 | FR-LR-108 | Confidence indicators for automatically extracted values. | SRS FR-015; UC-009 | Depends on extraction implementation. |
 | FR-LR-109 | Automated document classification. | SRS §7.4 | Only one document type exists in the analyzed template; not needed for MVP. |
@@ -1863,8 +1863,8 @@ The following issues were identified during review and are recorded rather than 
 ### Conflicting Requirements / Documentation Conflicts
 | ID | Conflict |
 |---|---|
-| FR-LR-101..104 vs SRS | The SRS marks source document capture/upload (FR-009, FR-010) as **MUST**/PROPOSED. The task-defined MVP core workflow (Create → Enter → Review → Generate → Review → Finalize → Store → Retrieve) does not include digital capture. **Conflict documented:** this document defers capture/upload out of the MVP; the SRS v0.1 treatment must be reconciled in the SRS consolidation pass. |
-| BR-008 vs template | SRS BR-008 claims "minimum two witnesses per party" (Muluki Civil Code §386); the template shows 1–3 witnesses total, not per party. Preserved as [UNVERIFIED — CANDIDATE DOMAIN RULE]; not enforced. See Business Rules.md §6. |
+| FR-LR-101..104 vs SRS | ~~The SRS marked source document capture/upload (FR-009, FR-010) as **MUST**/PROPOSED while the MVP core workflow (Create → Enter → Review → Generate → Review → Finalize → Store → Retrieve) does not include digital capture.~~ **RESOLVED 2026-08-13 (Decision 009)** — SRS FR-009/FR-010 downgraded to optional supporting capabilities; capture/upload stays outside the MVP core workflow. |
+| BR-008 vs template | ~~SRS BR-008 claimed "minimum two witnesses per party"; the template shows 1–3 witnesses total.~~ **RESOLVED 2026-08-13** — rule updated to "minimum one witness per party; name, age, address; citizenship optional" (project owner); still [UNVERIFIED — CANDIDATE DOMAIN RULE] pending legal confirmation. |
 
 ### Unsourced Requirements
 | ID | Issue |

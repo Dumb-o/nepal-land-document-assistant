@@ -210,9 +210,9 @@
 |---|---|
 | **Actors** | Operator |
 | **Precondition** | Draft reviewed and approved by the operator. |
-| **Main Flow** | 1. Operator performs the finalization action. 2. System transitions the document from Draft to Finalized System Record. 3. System records finalization timestamp, operator identity, and template version. 4. Finalized record becomes non-editable. |
+| **Main Flow** | 1. Operator performs the finalization action. 2. System transitions the document from Draft to Finalized Document. 3. System records finalization timestamp, operator identity, and template version. 4. Finalized record becomes non-editable. |
 | **Alternative Flows** | 4a. Revision needed after finalization → new version or new case created; original preserved. |
-| **Postcondition** | Finalized System Record stored, immutable, and associated with its case. |
+| **Postcondition** | Finalized Document stored, immutable, and associated with its case. |
 | **SRS Trace** | FR-027, FR-028, FR-029, FR-030, FR-031 |
 | **Validation Needed** | Yes — with domain experts |
 
@@ -222,7 +222,7 @@
 |---|---|
 | **Actors** | Operator |
 | **Precondition** | Past cases exist. |
-| **Main Flow** | 1. Operator enters search criteria (case ID, party name, client name, Case Type, kitta number, date range — [PROPOSED]). 2. System returns matching cases. 3. Operator opens a case and retrieves its Finalized System Record (or resumes in-progress work). |
+| **Main Flow** | 1. Operator enters search criteria (case ID, party name, client name, Case Type, kitta number, date range — [PROPOSED]). 2. System returns matching cases. 3. Operator opens a case and retrieves its Finalized Document (or resumes in-progress work). |
 | **Postcondition** | Operator has retrieved the desired case/document. |
 | **SRS Trace** | FR-032, FR-033, FR-038, FR-039 |
 | **Validation Needed** | Yes — search criteria [TO BE VALIDATED] |

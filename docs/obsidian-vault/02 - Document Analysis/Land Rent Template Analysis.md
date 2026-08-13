@@ -17,7 +17,9 @@
 
 ### 1.1 General Description
 
-The source document is a collection of **7 filled-in examples** of the Nepali **जग्गा बहाल सम्झौता पत्र** (Land Rent Agreement Letter), with the last instance partially filled (containing blank fields for the tenant/second party). The document is marked **"WIP"** (Work In Progress), suggesting it is a working reference document for template design.
+The source document is a collection of **8 filled-in examples** of the Nepali **जग्गा बहाल सम्झौता पत्र** (Land Rent Agreement Letter), with the last instance partially filled (containing blank fields for the tenant/second party). The document is marked **"WIP"** (Work In Progress), suggesting it is a working reference document for template design.
+
+> **Count correction (2026-08-13):** A fresh `pdftotext -layout` extraction verified **8 instances (7 complete, 1 partially blank)**. The earlier 7-instance count merged the second Sunil Maharjan/Dawa Tamang instance (Tab 7, rent ₹10,000) into its near-duplicate; the instance inventory is catalogued in the [[../03 - Requirements/Clause Library/Agricultural Land Rent Clause Library|Clause Library]] §2 (SD-01..SD-08).
 
 ### 1.2 Document Purpose
 
@@ -36,7 +38,7 @@ Private contractual agreement. The template references governing law: **मु�
 
 ### 1.5 Overall Structure
 
-A consistent structure across all 7 instances:
+A consistent structure across all 8 instances:
 
 1. **Title** — जग्गा बहाल सम्झौता पत्र
 2. **Preamble (लिखितम)** — Party identification, legal references, consent statement
@@ -52,7 +54,7 @@ A consistent structure across all 7 instances:
 
 ### 1.7 Structure Stability
 
-The overall structure appears **stable** and consistent across all 7 examples. The core preamble formula and clause pattern are repeated with minimal variation.
+The overall structure appears **stable** and consistent across all 8 examples. The core preamble formula and clause pattern are repeated with minimal variation.
 
 ### 1.8 Reusable Template Status
 
@@ -217,8 +219,8 @@ Same structure as First Party with one additional variant:
 
 | Variant | Observed In |
 |---|---|
-| **Individual** (same fields as first party) | 6 of 7 instances |
-| **Company/Organization** with: company name, registration number, registration date, registrar office, proprietor name | 1 of 7 instances |
+| **Individual** (same fields as first party) | 7 of 8 instances |
+| **Company/Organization** with: company name, registration number, registration date, registrar office, proprietor name | 1 of 8 instances |
 
 ### 5.3 Witnesses (साक्षी)
 
@@ -358,7 +360,7 @@ No other duration formats (months, indefinite) were observed, but these may exis
 
 ### 9.2 Conditional Clause Analysis
 
-The following clause-level conditionals were observed across the 7 instances:
+The following clause-level conditionals were observed across the 8 instances:
 
 | Clause Topic | Present In | Notes |
 |---|---|---|
@@ -643,7 +645,7 @@ This section identifies where the current SRS v0.1 aligns with, falls short of, 
 | Case-based workflow confirmed | FR-004–FR-008 | Each agreement is a distinct case with parties, property, terms | Continue as-is | Medium |
 | Human verification required for party data | FR-016, Human Authority Principle | Birthdates, citizenship numbers, and property IDs are critical | Continue as-is; this is well-supported | High |
 | Document generation from verified data | FR-021, DG-001 | Template has structured variable fields | Continue as-is | High |
-| Template-based generation approach | FR-023, DG-001 | Consistent structure across all 7 instances confirms template approach | Continue as-is | High |
+| Template-based generation approach | FR-023, DG-001 | Consistent structure across all 8 instances confirms template approach | Continue as-is | High |
 | Nepali language requirement | FR-022, DG-002 | All documents entirely in Nepali (Devanagari) | Confirmed — no change needed | High |
 | Fixed + Variable template structure | FR-023 | Existing templates have clear fixed preamble + variable fields | Continue as-is | Medium |
 | Source document capture required | FR-009–FR-012 | Citizenship and Lalpurja are primary source documents | Continue as-is | Medium |
@@ -697,14 +699,14 @@ See Section 15 (Open Questions) above — all 28 OQ-TA questions should be consi
 |---|---|---|
 | AS-001: Users are notary/document-prep professionals | [TO BE VALIDATED] | Writer with license number "प्र.प.नं. ३४६" suggests professional scribe registration |
 | AS-002: Currently prepared with word processors | [TO BE VALIDATED] | PDF created with Google Docs ("Skia/PDF m152 Google Docs Renderer") confirms digital authoring |
-| AS-007: Template has stable structure | [TO BE VALIDATED] | Highly consistent across all 7 instances — assumption appears well-founded |
+| AS-007: Template has stable structure | [TO BE VALIDATED] | Highly consistent across all 8 instances — assumption appears well-founded |
 | AS-009: Manual workflow follows Section 3.2 pattern | [TO BE VALIDATED] | Template structure aligns with hypothesized workflow |
 
 #### H. Potential Contradictions
 
 | Finding | SRS | Template | Resolution |
 |---|---|---|---|
-| Number of witnesses | BR-008 claims minimum 2 witnesses per party | Template shows 1–3 witnesses total (not per party) | BR-008 is already [UNVERIFIED — CANDIDATE DOMAIN RULE]; template evidence doesn't confirm the "per party" requirement |
+| Number of witnesses | ~~BR-008 claimed minimum 2 witnesses per party~~ | Template shows 1–3 witnesses total (name/address/age) | **RESOLVED 2026-08-13** — BR-008 updated to minimum 1 witness per party (name, age, address; citizenship optional) per project owner; template supports up to 3 slots |
 | Rent threshold for written agreement | BR-009 NPR 20,000 threshold | Template shows instances with रु ५,५०० (below threshold) | BR-009 candidate rule already correctly marked as unverified |
 | Registration threshold | BR-010 NPR 500,000 / 10 years | Template shows 10-year term in one instance | Template alone cannot confirm or deny this requirement |
 
@@ -716,7 +718,7 @@ See Section 15 (Open Questions) above — all 28 OQ-TA questions should be consi
 | Metric | Count |
 |---|---|
 | **Files Analyzed** | 1 PDF (`Land Rent - WIP.pdf`), 1 SRS (`SRS.md`) |
-| **Template Instances in Document** | 7 filled-in examples (6 complete, 1 partially blank) |
+| **Template Instances in Document** | 8 filled-in examples (7 complete, 1 partially blank) |
 | **Document Structure** | 8 logical sections (title, preamble, clauses, signatures × 2, witnesses, writer, date) |
 | **Variable Fields Identified** | ~45 distinct fields |
 | **Static Content Blocks** | ~12 confirmed static elements |

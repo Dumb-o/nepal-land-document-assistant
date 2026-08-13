@@ -125,7 +125,7 @@ This principle does not guarantee legal validity. It defines the intended relati
 | Application User | A person who operates the system (e.g., a document-preparation operator or administrator). An Application User is distinct from a **Client**. |
 | Client | The person or organization on whose behalf a case is processed (e.g., a landowner or tenant in a land-rent case). A Client is not an Application User and does not necessarily log in to the system. A Client's information may be reused across one or more Cases. |
 | Case | A long-lived, self-contained matter (e.g., a land-rent document preparation instance) comprising source documents, acquired data, verified data, drafts, and the finalized document. A Case persists after finalization and is classified by a Case Type. |
-| Case Type | The classification of a Case that determines its workflow and document requirements. The MVP supports a single Case Type: LAND_RENT. Future Case Types are possible but out of scope for the MVP. A Case Type is distinct from a property's **use purpose** (agricultural, business, residential) and from document type. |
+| Case Type | The classification of a Case that determines its workflow and document requirements. The MVP supports a single Case Type: LAND_RENT. Future Case Types are possible but out of scope for the MVP. A Case Type is distinct from a property's **use purpose** (agriculture, business, residence, mixed) and from document type. |
 | Operator | The authorized professional who uses the system to prepare documents |
 | Source Document | A physical or digital document provided by the client that serves as input to the document preparation process (e.g., citizenship certificate, Lalpurja) |
 | Candidate Data | Data that has been acquired (via automated extraction, manual entry, or import) but has not yet been verified by the operator |
@@ -206,12 +206,11 @@ Recent Cases / Home (post-auth landing experience)
                 ↓
 Source Documents (client-provided, associated with Client and/or Case)
     ↓
-Capture / Upload (via camera or file)
+Capture / Upload (via camera or file) — optional supporting capability
     ↓
-Information Acquisition
-    ├── Manual Data Entry (core capability)
-    └── Automated Information Extraction (proposed — subject to technical research;
-         may use OCR or other technologies)
+Manual Data Entry (primary information-acquisition mechanism)
+    ├── [FUTURE ENHANCEMENT] Automated Information Extraction (subject to technical research;
+    │    may use OCR or other technologies; not part of the MVP — Decision 009)
     ↓
 Candidate Data (presented to operator)
     ↓
@@ -227,7 +226,7 @@ Human Review (operator reviews generated document)
     ↓
 Operator Finalization
     ↓
-Finalized System Record (Finalized Document)
+Finalized Document
     ↓
 Persistent Storage (Case and finalized documents retained indefinitely for
                     operational use; retention/archival/backup/deletion
@@ -240,11 +239,9 @@ Persistent Storage (Case and finalized documents retained indefinitely for
 
 **Case Type:** Every Case is classified by a Case Type. The MVP supports a single Case Type — LAND_RENT. Case Type is distinct from a property's use purpose (Decision 005; see FR-035).
 
-The system's ability to capture, upload, and manage source documents is a core proposed capability. Automated information extraction (which may use OCR or other technologies) is a potential enhancement whose feasibility and reliability have not yet been established.
+Source document capture/upload is an **optional supporting capability**: a case can be created and populated entirely through manual entry without any source document. Automated information extraction (which may use OCR or other technologies) is a **future enhancement** — not part of the MVP — but is required before full deployment (Decision 009).
 
-[OPEN QUESTION] Whether automated extraction is feasible, desirable, or cost-effective for the initial release has not been determined. This is subject to the outcomes of Technical Research (Phase 0.8) and domain expert feedback.
-
-**Manual entry is the fallback:** If automated extraction is not feasible for the initial release, the system shall support manual data entry as the primary information-acquisition mechanism, with document generation remaining as a core capability. This decision is [TO BE DETERMINED].
+[RESOLVED — Decision 009] Manual data entry is the **primary information-acquisition mechanism** for the initial release. Automated extraction (OCR or other technologies) is a future enhancement whose feasibility is subject to Technical Research (Phase 0.8) and domain expert feedback.
 
 ### 3.5 Product Boundaries
 
@@ -365,9 +362,8 @@ The MVP covers the complete workflow for **land-rent document preparation** by a
 - **Persistent cases**: cases and finalized documents are retained after finalization and remain retrievable (retention/archival/backup/deletion policies [TO BE VALIDATED])
 - **Recent Cases** as the post-authentication landing experience (open existing or create new) and a case directory for browsing by Case Type
 - **Client management**: create, view, search, associate with cases, and reuse Client records (a Client is distinct from the Application User)
-- Source document capture via camera or file upload
-- Manual data entry (core capability)
-- [PROPOSED] Automated information extraction (subject to technical research)
+- Manual data entry (primary information-acquisition mechanism; cases can be created and populated without any source document)
+- Source document capture via camera or file upload (optional supporting capability)
 - Human verification and correction of Candidate Data
 - Structured storage of Verified Case Data
 - Template-based document generation
@@ -376,7 +372,7 @@ The MVP covers the complete workflow for **land-rent document preparation** by a
 - Storage of finalized documents with access control
 - Distinction between **Source Documents**, **Generated Drafts**, and **Finalized Documents**
 
-Whether OCR and automated extraction are part of the MVP is [TO BE DETERMINED] based on technical research.
+[RESOLVED — Decision 009] OCR and automated extraction are **not** part of the MVP. They are future enhancements required before full deployment, subject to Phase 0.8 Technical Research.
 
 ### 6.2 Future Scope
 
@@ -460,14 +456,13 @@ CASE
 
 > The lifecycle below is [PROPOSED] and has not been validated with domain experts. The exact states and transitions may differ from actual practice. Cases persist after finalization.
 
-[PROPOSED] A possible conceptual lifecycle is:
+A conceptual lifecycle aligned across artifacts (see Glossary — Lifecycle):
 
 ```
 Created
-→ Data Collection
-→ Verification
+→ In Progress
 → Draft Generated
-→ Review
+→ Under Review
 → Finalized
 → Persistent (retained for operational use; archival is [OPEN QUESTION])
 ```
@@ -505,7 +500,7 @@ Created
 | Field | Description |
 |---|---|
 | **ID** | FR-007 |
-| **Requirement** | [PROPOSED] The system shall track the status of each case through its lifecycle (e.g., Created, Data Collection, Verification, Draft Generated, Review, Finalized, Archived/Closed). |
+| **Requirement** | [PROPOSED] The system shall track the status of each case through its lifecycle (e.g., Created, In Progress, Draft Generated, Under Review, Finalized, Persistent). |
 | **Priority** | Should |
 | **Status** | [PROPOSED] |
 | **Rationale** | Status tracking helps operators understand which cases are in progress and what steps remain. |
@@ -592,9 +587,9 @@ Camera capture of source documents is a core part of the product vision. File up
 |---|---|
 | **ID** | FR-009 |
 | **Requirement** | The operator shall be able to capture images of source documents using a device camera. |
-| **Priority** | Must |
+| **Priority** | Should |
 | **Status** | [PROPOSED] |
-| **Rationale** | Mobile capture is the primary proposed method for getting source documents into the system. |
+| **Rationale** | Capture is an optional supporting capability (Decision 009); manual data entry does not depend on it. |
 | **Source** | Product vision |
 | **Validation Needed** | Yes — with domain experts |
 
@@ -602,9 +597,9 @@ Camera capture of source documents is a core part of the product vision. File up
 |---|---|
 | **ID** | FR-010 |
 | **Requirement** | The operator shall be able to upload existing digital images or PDF files of source documents. |
-| **Priority** | Must |
+| **Priority** | Should |
 | **Status** | [PROPOSED] |
-| **Rationale** | Some source documents may already be available in digital form. |
+| **Rationale** | Some source documents may already be available in digital form. Upload is an optional supporting capability (Decision 009). |
 | **Source** | Product vision |
 | **Validation Needed** | Yes |
 
@@ -678,7 +673,7 @@ The MVP product must remain useful without OCR. Automated extraction (including 
 | **Requirement** | If automated extraction is implemented, the system shall present the resulting Candidate Data to the operator for human verification before it may be used in document generation. |
 | **Priority** | Must (if automated extraction is implemented) |
 | **Status** | [PROPOSED] |
-| **Rationale** | Human verification is a core principle. Automated extraction may contain errors. Even if automated extraction is implemented, manual entry must remain available as a fallback. |
+| **Rationale** | Human verification is a core principle. Automated extraction may contain errors. Even if automated extraction is implemented, manual entry remains the primary acquisition path (Decision 009) and must remain available. |
 | **Source** | Product vision: human-in-the-loop |
 | **Validation Needed** | Yes |
 
@@ -751,7 +746,7 @@ Candidate Data (whether from automated extraction or manual entry) may contain e
 | **Requirement** | The operator shall be able to manually enter data for fields that are not present in or cannot be extracted from source documents. |
 | **Priority** | Must |
 | **Status** | [PROPOSED] |
-| **Rationale** | Not all required information may be present in source documents; some will come from the client verbally. Manual entry is also the fallback if automated extraction is unavailable. |
+| **Rationale** | Not all required information may be present in source documents; some will come from the client verbally. Manual entry is the primary acquisition mechanism and must not depend on source documents or automated extraction (Decision 009). |
 | **Source** | Product vision |
 | **Validation Needed** | Yes — with domain experts |
 
@@ -866,22 +861,22 @@ Finalization is a **state transition**, not merely saving a file. The conceptual
 ```
 DRAFT
 → Authorized Human Review
-→ FINALIZED (Finalized System Record)
+→ FINALIZED (Finalized Document)
 ```
 
-Once finalized, the Finalized System Record must not be silently or directly modified. The finalized record retains associated metadata:
+Once finalized, the Finalized Document must not be silently or directly modified. The finalized record retains associated metadata:
 
 - Finalization timestamp
 - Finalizing operator identity
 - Template version used for generation
 - Case association
 
-> Terminology: The system record of a finalized document is called a **Finalized System Record** or **Finalized Document Record**. This does not imply legal validity. The system does not independently determine legal validity (see Section 2.5 Human Authority Principle).
+> Terminology: The system record of a finalized document is called a **Finalized Document** (formerly "Finalized Document"). This does not imply legal validity. The system does not independently determine legal validity (see Section 2.5 Human Authority Principle).
 
 | Field | Description |
 |---|---|
 | **ID** | FR-027 |
-| **Requirement** | The operator shall explicitly perform a finalization action to transition a document from Draft to Finalized System Record. |
+| **Requirement** | The operator shall explicitly perform a finalization action to transition a document from Draft to Finalized Document. |
 | **Priority** | Must |
 | **Status** | [PROPOSED] |
 | **Rationale** | Finalization is the gate between draft and completed document. It is a deliberate, authorized action. |
@@ -891,7 +886,7 @@ Once finalized, the Finalized System Record must not be silently or directly mod
 | Field | Description |
 |---|---|
 | **ID** | FR-028 |
-| **Requirement** | After finalization, the Finalized System Record shall not be directly editable. Any revision must create a new version or a new case, preserving the original finalized record. |
+| **Requirement** | After finalization, the Finalized Document shall not be directly editable. Any revision must create a new version or a new case, preserving the original finalized record. |
 | **Priority** | Must |
 | **Status** | [PROPOSED] |
 | **Rationale** | Finalized documents must be distinguishable from drafts and protected from accidental or unauthorized modification. |
@@ -910,14 +905,14 @@ Once finalized, the Finalized System Record must not be silently or directly mod
 
 ### 7.12 Finalized Document Storage
 
-Finalized documents shall be persistently retained as the system's Finalized System Records. The retention policy for other artifacts — source documents, Candidate Data, Verified Case Data, draft documents, and intermediate processing artifacts — is not yet determined.
+Finalized documents shall be persistently retained as the system's Finalized Documents. The retention policy for other artifacts — source documents, Candidate Data, Verified Case Data, draft documents, and intermediate processing artifacts — is not yet determined.
 
 > [OPEN QUESTION] Retention policies for source documents, Candidate Data, drafts, and intermediate artifacts are not yet determined. See Section 10.
 
 | Field | Description |
 |---|---|
 | **ID** | FR-030 |
-| **Requirement** | The system shall persistently retain Finalized System Records in a format suitable for printing and delivery. |
+| **Requirement** | The system shall persistently retain Finalized Documents in a format suitable for printing and delivery. |
 | **Priority** | Must |
 | **Status** | [PROPOSED] |
 | **Rationale** | Finalized documents must be available for delivery to clients and for record-keeping. |
@@ -927,7 +922,7 @@ Finalized documents shall be persistently retained as the system's Finalized Sys
 | Field | Description |
 |---|---|
 | **ID** | FR-031 |
-| **Requirement** | The system shall associate each Finalized System Record with its originating case for retrieval. |
+| **Requirement** | The system shall associate each Finalized Document with its originating case for retrieval. |
 | **Priority** | Must |
 | **Status** | [PROPOSED] |
 | **Rationale** | Case-to-document association enables organized retrieval. |
@@ -946,7 +941,7 @@ Potential search fields (all [PROPOSED] / [TO BE VALIDATED]) may include: Case I
 | Field | Description |
 |---|---|
 | **ID** | FR-032 |
-| **Requirement** | The operator shall be able to search for past cases and retrieve associated Finalized System Records. |
+| **Requirement** | The operator shall be able to search for past cases and retrieve associated Finalized Documents. |
 | **Priority** | Should |
 | **Status** | [PROPOSED] |
 | **Rationale** | Operators may need to reference or reproduce past documents. |
@@ -1258,7 +1253,7 @@ Application Users are the operators and administrators of the system. They are d
 - Property location description
 - Plot / kitta number
 - Land area and measurement unit
-- Property type (residential, agricultural, commercial, etc.) — [TO BE VALIDATED]
+- Use Purpose (agriculture, business, residence, mixed) — [TO BE VALIDATED]
 
 [OPEN QUESTION] Exactly which property fields are required for a land-rent document is unknown without analyzing the actual template.
 
@@ -1266,7 +1261,7 @@ Application Users are the operators and administrators of the system. They are d
 
 - Lessor (property owner): name, citizenship number, address, contact
 - Lessee (tenant): name, citizenship number, address, contact
-- Witnesses: name, citizenship number (at least two per party per legal requirement)
+- Witnesses: name, age, address (at least one witness per party; citizenship optional) — see BR-008
 
 [TO BE VALIDATED] Whether additional party information is required.
 
@@ -1326,7 +1321,7 @@ Verified Case Data is information that has been reviewed, corrected (if needed),
 - Draft status (draft, under review, finalized)
 - Editing history (if tracked)
 
-### 9.11 Finalized System Record Metadata
+### 9.11 Finalized Document Metadata
 
 - Unique finalized document identifier
 - Case association
@@ -1395,7 +1390,7 @@ Captured / Entered Information
 Verified Case Data + Template (specific version)
     → Draft Document
     → Human Review
-    → Finalized System Record
+    → Finalized Document
 ```
 
 ### 10.2 Relationship Between Lifecycles
@@ -1420,9 +1415,9 @@ Verified Case Data + Template (specific version)
 
 ### 10.5 Final Document Storage
 
-Finalized System Records are persistently retained. Finalized cases are intended to be retained indefinitely for operational use; the exact retention, archival, backup, and deletion policy is [TO BE VALIDATED]. The retention policy for other artifacts — source documents, Candidate Data, Verified Case Data, draft documents, and intermediate processing artifacts — is not yet determined and may vary by artifact type.
+Finalized Documents are persistently retained. Finalized cases are intended to be retained indefinitely for operational use; the exact retention, archival, backup, and deletion policy is [TO BE VALIDATED]. The retention policy for other artifacts — source documents, Candidate Data, Verified Case Data, draft documents, and intermediate processing artifacts — is not yet determined and may vary by artifact type.
 
-> The system does not independently determine legal validity. A Finalized System Record is the system's record of a completed document — it does not constitute a legally valid document unless the operator and relevant authorities deem it so.
+> The system does not independently determine legal validity. A Finalized Document is the system's record of a completed document — it does not constitute a legally valid document unless the operator and relevant authorities deem it so.
 
 Possible interpretations (none confirmed):
 
@@ -1486,7 +1481,7 @@ Source Document
     → Verified Case Data
 ```
 
-**Manual fallback (always available):**
+**Manual entry path (primary — always available):**
 
 ```
 Source Document
@@ -1503,7 +1498,7 @@ Source Document
 - No accuracy or confidence thresholds are defined — these will be informed by Phase 0.8 Technical Research.
 - Handwriting recognition is [OPEN QUESTION] — feasibility is unknown and subject to technical research.
 
-The requirements in this section apply **if and only if** OCR or automated extraction is included in the MVP.
+The requirements in this section apply **if and only if** OCR or automated extraction is implemented. Per Decision 009, automated extraction is **not** part of the MVP; it is a future enhancement required before full deployment.
 
 ### 11.2 Image Capture
 
@@ -1586,7 +1581,7 @@ Verified Case Data
     →
     Human Review
     →
-    Finalized System Record
+    Finalized Document
 ```
 
 Every generated document should be associated with:
@@ -1656,7 +1651,7 @@ Every generated document should be associated with:
 
 - Generated documents start as drafts.
 - Drafts can be reviewed and edited (see Section 7.10).
-- Finalization transitions a draft to a Finalized System Record (see Section 7.11).
+- Finalization transitions a draft to a Finalized Document (see Section 7.11).
 
 ---
 
@@ -1683,7 +1678,7 @@ Authorization determines what an authenticated user is permitted to do. See FR-0
 - Candidate Data
 - Verified Case Data
 - Drafts
-- Finalized System Records
+- Finalized Documents
 - Audit logs
 
 Exact retention periods are [TO BE DETERMINED] and should be informed by legal research, domain expert input, and practical operational needs.
@@ -1751,7 +1746,7 @@ The following rules are derived from preliminary domain research but are **legal
 
 | ID | Candidate Rule | Why Verification Is Required | Required Validation Source | Current Status |
 |---|---|---|---|---|
-| BR-008 | A minimum of two witnesses per party is required for a valid lease agreement (per Muluki Civil Code Section 386). | Preliminary research identifies this provision, but its applicability to the specific document types and workflows in this project has not been authoritatively confirmed. | Nepali legal professional or authoritative legal source | [UNVERIFIED — CANDIDATE DOMAIN RULE] |
+| BR-008 | A minimum of one witness per party is required for a valid lease agreement. Witnesses are identified by name, age, and address; citizenship is optional. | Domain rule provided by the project owner (2026-08-13). The template shows 1–3 witnesses total recorded with name/address/age. Legal confirmation pending. | Nepali legal professional | [UNVERIFIED — CANDIDATE DOMAIN RULE] |
 | BR-009 | Written agreement is mandatory when monthly rent exceeds NPR 20,000. | Preliminary research identifies this threshold, but the interpretation, exceptions, and enforcement in practice require authoritative verification. | Nepali legal professional or authoritative legal source | [UNVERIFIED — CANDIDATE DOMAIN RULE] |
 | BR-010 | Registration at Land Revenue Office is required when annual rent exceeds NPR 500,000 or lease exceeds 10 years. | Preliminary research identifies these thresholds, but their applicability to different lease types and their practical relevance require verification. | Nepali legal professional or authoritative legal source | [UNVERIFIED — CANDIDATE DOMAIN RULE] |
 
@@ -1832,7 +1827,7 @@ The document generation capability will be implemented as a system component. Th
 | AS-002 | Land-rent documents are currently prepared using word-processing software or handwritten. | Affects the value proposition of automated generation | Domain expert interview | [TO BE VALIDATED] |
 | AS-003 | The primary device will be a mobile tablet or smartphone. | Affects UI design and platform choice | User research | [ASSUMPTION] |
 | AS-004 | The operator has basic familiarity with mobile apps and document workflows. | Affects UI complexity and training needs | Domain expert interview | [ASSUMPTION] |
-| AS-005 | Operators will have reliable internet connectivity during use. | Affects architecture decisions (online vs. offline) | User research | [ASSUMPTION] |
+| AS-005 | Operators will have reliable internet connectivity during use. | Affects architecture decisions (online vs. offline) | User research | [TO BE VALIDATED] — online/offline/hybrid undecided (see the Connectivity open question under Non-Functional Requirements) |
 | AS-006 | A single operator will work on one case at a time. | Affects concurrency requirements | Domain expert interview | [ASSUMPTION] |
 | AS-007 | The land-rent document template has a stable structure that can be represented in a template engine. | Fundamental assumption for document generation | Template analysis | [TO BE VALIDATED] |
 | AS-008 | Source documents are generally readable and of adequate quality for manual extraction by a human professional. | OCR feasibility depends partly on document quality | Sample document analysis | [ASSUMPTION] |
@@ -1845,7 +1840,7 @@ The document generation capability will be implemented as a system component. Th
 
 | ID | Risk | Impact | Likelihood | Mitigation | Status |
 |---|---|---|---|---|---|
-| RSK-001 | OCR inaccuracies for Nepali (Devanagari) text make automated extraction unreliable. | High — core feature may not be feasible | Unknown — requires research | Technical research (Phase 0.8); fallback to manual entry | [OPEN] |
+| RSK-001 | OCR inaccuracies for Nepali (Devanagari) text make automated extraction unreliable. | Medium — affects an optional future enhancement, not the MVP | Unknown — requires research | Technical research (Phase 0.8); manual data entry remains the primary path (Decision 009) | [OPEN] |
 | RSK-002 | Poor-quality source documents (faded, handwritten, stamped) cannot be reliably processed. | High — affects multiple requirements | Unknown — depends on document types | Sample document analysis; clear user guidance | [OPEN] |
 | RSK-003 | The land-rent template is more complex or variable than anticipated. | Medium — may delay development | Unknown — requires template analysis | Template analysis (next project activity) | [OPEN] |
 | RSK-004 | Operators may not trust system-generated documents, reducing adoption. | Medium — affects project success | Unknown | Human-in-the-loop design; iterative validation | [OPEN] |
@@ -1934,7 +1929,7 @@ The document generation capability will be implemented as a system component. Th
 
 | ID | Question |
 |---|---|
-| OQ-PS-01 | Should OCR be included in the MVP, or should the initial release support manual entry only? |
+| OQ-PS-01 | Should OCR be included in the MVP, or should the initial release support manual entry only? | **RESOLVED (Decision 009)** — manual entry only in the MVP; OCR is a future enhancement required before full deployment. |
 | OQ-PS-02 | Should the system support multiple operators in the first release? |
 | OQ-PS-03 | Should the system serve NRN (Non-Resident Nepali) users? |
 | OQ-PS-04 | Is there a market need for a desktop/Web version, or is mobile sufficient? |
@@ -1995,7 +1990,7 @@ The document generation capability will be implemented as a system component. Th
 | Category | Count |
 |---|---|
 | Functional Requirements | 50 (FR-001..FR-049 plus FR-012a) |
-| Non-Functional Requirements | 13 (SRS §8; the [[../Non-Functional Requirements/Non-Functional Requirements|Non-Functional Requirements]] document separately maintains 26 NFRs under a different ID scheme) |
+| Non-Functional Requirements | 13 (SRS §8; the [[../Non-Functional Requirements/Non-Functional Requirements|Non-Functional Requirements]] document separately maintains 25 NFRs under a different ID scheme) |
 | OCR-Specific Requirements (conditional) | 6 |
 | Document Generation Requirements | 3 |
 | Business Rules | 19 (13 original + 6 product-decision rules; 3 candidate domain rules remain [UNVERIFIED — CANDIDATE DOMAIN RULE]) |

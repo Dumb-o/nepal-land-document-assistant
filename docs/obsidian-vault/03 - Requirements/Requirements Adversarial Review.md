@@ -40,9 +40,9 @@ The deliverable is a verdict — **READY TO BASELINE** or **NOT READY TO BASELIN
 | 11 | Project Glossary | `docs/obsidian-vault/00 - Project Control/Project Glossary.md` | — |
 | 12 | Project Overview | `docs/obsidian-vault/00 - Project Control/Project Overview.md` | — |
 | 13 | Project Roadmap | `docs/obsidian-vault/00 - Project Control/Project Roadmap.md` | — |
-| 14 | Reference template (evidence base) | `private/Reference Documents/Land Rent - WIP.pdf` | 7 instances |
+| 14 | Reference template (evidence base) | `private/Reference Documents/Land Rent - WIP.pdf` | 8 instances |
 
-**Evidence-base note:** the template analysis rests on **one PDF containing 7 instances** (6 complete, 1 partially blank). For a system whose only output is a legally consequential document, this is a thin sample (see AR-OBS-04).
+**Evidence-base note:** the template analysis rests on **one PDF containing 8 instances** (7 complete, 1 partially blank). For a system whose only output is a legally consequential document, this is a thin sample (see AR-OBS-04).
 
 ---
 
@@ -200,12 +200,12 @@ None of these is a "writing quality" issue. Each is a **decision** that has not 
 ### AR-007 — Signature / execution method for the finalized document is undefined
 - **Severity:** HIGH
 - **Category:** Lifecycle / Legal-Domain
-- **Evidence:** Template S04/S05 signature areas with `P1_SIGNATURE_NAME`/`P2_SIGNATURE_NAME`; `Land Rent Template Analysis.md` §17.2 Major Unknown #6 "whether digital signatures or only physical signatures are used"; no FR for printing or e-signing; `SRS.md` §10.5 finalization flow ends at "Finalized System Record."
+- **Evidence:** Template S04/S05 signature areas with `P1_SIGNATURE_NAME`/`P2_SIGNATURE_NAME`; `Land Rent Template Analysis.md` §17.2 Major Unknown #6 "whether digital signatures or only physical signatures are used"; no FR for printing or e-signing; `SRS.md` §10.5 finalization flow ends at "Finalized Document."
 - **Problem:** The document lifecycle has no defined execution step. A "finalized" PDF that must be signed by both parties, witnesses, and possibly the writer has no defined path back into the system.
-- **Failure Scenario:** System finalizes a PDF; the operator prints it, parties sign on paper, and the executed original is filed physically — but the Finalized System Record has no link to the executed copy, so retrieval and audit see only the unsigned generator output.
+- **Failure Scenario:** System finalizes a PDF; the operator prints it, parties sign on paper, and the executed original is filed physically — but the Finalized Document has no link to the executed copy, so retrieval and audit see only the unsigned generator output.
 - **Impact:** Finalized-record ↔ executed-document gap; audit/retrieval of the true agreement undefined.
 - **Current Status:** Open
-- **Recommended Resolution:** Decide the execution model (print-and-sign, electronic signature, or both) and how the executed copy is associated with and retained against the Finalized System Record.
+- **Recommended Resolution:** Decide the execution model (print-and-sign, electronic signature, or both) and how the executed copy is associated with and retained against the Finalized Document.
 
 ### AR-008 — Output format and printability are unconfirmed
 - **Severity:** HIGH
@@ -250,12 +250,12 @@ None of these is a "writing quality" issue. Each is a **decision** that has not 
 ### AR-012 — Case lifecycle end-state contradicts across artifacts
 - **Severity:** HIGH
 - **Category:** Lifecycle / Scenario
-- **Evidence:** `SRS.md` FR-007 lifecycle includes "**Archived/Closed**"; `Data Needs.md` §5.3 minimum set is `Created → In Progress → Draft Generated → Under Review → Finalized (→ Persistent)` and explicitly demotes the SRS's finer states ("Data Collection", "Verification", "Archived/Closed") to `[PROPOSED]`; `SRS.md` §10.5 archival is `[OPEN QUESTION]`.
-- **Problem:** Two artifacts describe different state machines, and they disagree on whether a post-finalization "Archived/Closed" state exists. Status semantics (DN-CASE-02) drive every filter (Recent Cases, directory, search).
-- **Failure Scenario:** A status filter written against Data Needs shows all finalized cases as current; one written against SRS hides "archived" cases from the operator.
+- **Evidence:** ~~`SRS.md` FR-007 lifecycle included "Archived/Closed" and finer states; `Data Needs.md` §5.3 minimum set is `Created → In Progress → Draft Generated → Under Review → Finalized (→ Persistent)`.~~
+- **Problem:** ~~Two artifacts described different state machines, disagreeing on a post-finalization "Archived/Closed" state. Status semantics (DN-CASE-02) drive every filter (Recent Cases, directory, search).~~
+- **Failure Scenario:** ~~A status filter written against Data Needs shows all finalized cases as current; one written against SRS hides "archived" cases from the operator.~~
 - **Impact:** Inconsistent case lists and retrieval behavior.
-- **Current Status:** Open
-- **Recommended Resolution:** Establish one authoritative state machine with a transition map; record it in one place (recommended: Data Needs §5.3) and make the SRS reference it.
+- **Current Status:** **RESOLVED 2026-08-13** — canonical state machine `Created → In Progress → Draft Generated → Under Review → Finalized → Persistent` established and SRS FR-007 aligned to Data Needs §5.3.
+- **Recommended Resolution:** Establish one authoritative state machine with a transition map; record it in one place (recommended: Data Needs §5.3) and make the SRS reference it. (Done 2026-08-13.)
 
 ### AR-013 — Notice-period unit model is ambiguous
 - **Severity:** HIGH
@@ -457,6 +457,7 @@ None of these is a "writing quality" issue. Each is a **decision** that has not 
 - **Category:** Quality
 - **Evidence:** NFR-PRI-003 "Protect Information During Transfer (Privacy)" vs NFR-SEC-004 "Protect Information During Transfer."
 - **Recommended Resolution:** Merge into one transfer-protection requirement referenced by both categories.
+- **Status:** **RESOLVED 2026-08-13** — NFR-PRI-003 merged into NFR-SEC-004 (privacy wording folded in; NFR-PRI-003 ID retained as a traceability stub).
 
 ### AR-035 — DN-DOC-05 duplicates DN-GEN-04 (template identity/version)
 - **Severity:** LOW
@@ -513,7 +514,7 @@ None of these is a "writing quality" issue. Each is a **decision** that has not 
 ### AR-OBS-04 — The template evidence base is thin for a legally consequential generator
 - **Severity:** OBSERVATION
 - **Category:** Evidence
-- **Evidence:** One reference PDF, 7 instances (6 complete); RSK-003 acknowledges template risk.
+- **Evidence:** One reference PDF, 8 instances (7 complete); RSK-003 acknowledges template risk.
 - **Observation:** A system that auto-generates legal agreements from a single observed template family should validate against more instances and other preparers before claiming clause completeness.
 
 ### AR-OBS-05 — No requirement covers professional accountability / second review
@@ -646,7 +647,7 @@ Ten acquisition paths were probed, mapped to Data Needs §2.7 (five modeled path
 
 **Gaps:**
 
-1. **6 `[UNRESOLVED]` template/SRS fields** remain unmapped or contradicted: writer license number (OQ-DN-03), deposit amount, lease start date, utility responsibilities, party contact, witness citizenship (Data Needs §7.1).
+1. **5 `[UNRESOLVED]` template/SRS fields** remain unmapped or contradicted: writer license number (OQ-DN-03), deposit amount, lease start date, utility responsibilities, party contact (Data Needs §7.1). *(Witness citizenship was resolved 2026-08-13 — now optional per updated BR-008.)*
 2. **Group-level traceability gaps** explicitly marked `[TRACEABILITY REQUIRED]`: DN-PTY, DN-OWN, DN-PAY, DN-PROV, DN-WRI-02 (Data Needs §8.1) — no dedicated FR or SRS §9 entry.
 3. **DN-WRI-02** (writer license) has no dedicated functional requirement; FR-LR-016 covers witnesses and writer but not the license field.
 
@@ -700,7 +701,7 @@ Ten acquisition paths were probed, mapped to Data Needs §2.7 (five modeled path
 **Findings affecting persistence:**
 
 1. **Retention/archival/backup/deletion policy absent** (AR-006, HIGH) — the single biggest persistence gap; acknowledged everywhere as `[TO BE VALIDATED]`.
-2. **Lifecycle end-state contradiction** (AR-012, HIGH) — Archived/Closed in SRS vs no archival state in Data Needs.
+2. **Lifecycle end-state contradiction** (AR-012, HIGH) — ~~Archived/Closed in SRS vs no archival state in Data Needs~~ **RESOLVED 2026-08-13** — SRS aligned to Data Needs canonical states.
 3. **Candidate-data retention open** (AR-022, MEDIUM).
 4. **Audit-log retention open** (AR-024, MEDIUM).
 5. **Storage architecture undecided** (SRS §15.5) — feeds AR-006 and AR-015.
@@ -715,7 +716,7 @@ Ten acquisition paths were probed, mapped to Data Needs §2.7 (five modeled path
 
 **AuthN/AuthZ:** FR-LR-001..003 define authentication and RBAC (Operator/Administrator); BR-003/015/037 define access rules; NFR-SEC-002 requires authentication. The mechanism is `[TO BE DETERMINED]` (SRS §7.1) — acceptable as non-prescriptive, but it leaves NFR-SEC-002/003/004 unverifiable (AR-039). No case-level or client-level access-control requirement exists (all-or-nothing at the account level).
 
-**Data protection:** NFR-SEC-001 (protect stored data), NFR-SEC-004 / NFR-PRI-003 (transfer) — the latter two duplicate each other (AR-034). NFR-PRI-001/004/005 govern access to personal and finalized-document data. No encryption requirement is stated explicitly; "protect" is qualitative.
+**Data protection:** NFR-SEC-001 (protect stored data), NFR-SEC-004 (transfer — merged disposition of former NFR-PRI-003, AR-034, resolved 2026-08-13). NFR-PRI-001/004/005 govern access to personal and finalized-document data. No encryption requirement is stated explicitly; "protect" is qualitative.
 
 **Privacy vs retention tension:** NFR-PRI-002 ("avoid unnecessary retention") directly conflicts with the "retain indefinitely" intent (BR-040) until a retention policy exists (AR-006). Sensitive PII (citizenship numbers, lineage, property details) is retained with no deletion rule.
 
@@ -736,7 +737,7 @@ Consolidated list of values and groups with no clean requirement home at baselin
 | DN-PAY (payment/receipt) | Data Needs §8.1 `[TRACEABILITY REQUIRED]` (partial) | No dedicated FR | — |
 | DN-PROV (provenance) | Data Needs §8.1 `[TRACEABILITY REQUIRED]` | No dedicated FR/UI | AR-027 |
 | DN-WRI-02 (writer license) | Data Needs §7.1 `[UNRESOLVED]`, OQ-DN-03 | No FR covers the license field | — |
-| Writer license, deposit, lease-start, utilities, contact, witness citizenship | Data Needs §7.1 `[UNRESOLVED]` (6 fields) | Unmapped/contradicted template or SRS fields | §22 C4–C6 |
+| Writer license, deposit, lease-start, utilities, contact | Data Needs §7.1 `[UNRESOLVED]` (5 fields) | Unmapped/contradicted template or SRS fields | §22 C4–C6 (witness citizenship resolved 2026-08-13) |
 | FR-LR-009 (Case Notes) | FR §8 weakly sourced | PROPOSED-only backing | AR-036 |
 | FR-LR-031 (output format) | FR §8 unsourced | Unconfirmed format | AR-008 |
 | SRS §20.2 unsourced set | SRS §20.2 | Auth mechanism, search criteria, UI language, performance targets lack validated source | AR-039, AR-023 |
@@ -752,13 +753,13 @@ Consolidated list of values and groups with no clean requirement home at baselin
 |---|---|---|---|---|
 | C1 | SRS §6.1/§7.3/§3.4: capture/upload is MVP (Must) | FR §7: FR-LR-101..104 DEFERRED | MVP boundary differs between synchronized artifacts | **AR-001 (CRITICAL)** |
 | C2 | Data Needs §6.3: blank Second Party proceeds where template permits | Data Needs §7.2 (scenario 5) + FR-LR-030/BR-017: generation blocked when party missing | Partial-draft behavior self-contradictory | **AR-003 (CRITICAL)** |
-| C3 | SRS FR-007: lifecycle includes "Archived/Closed" | Data Needs §5.3: no archival state; SRS finer states demoted to PROPOSED | Two state machines, different end-states | **AR-012 (HIGH)** |
+| C3 | ~~SRS FR-007: lifecycle included "Archived/Closed"~~ | Data Needs §5.3 canonical states | **RESOLVED 2026-08-13** — SRS aligned | ~~AR-012 (HIGH)~~ |
 | C4 | SRS §9.4: parties include "contact" | Template: no contact field exists | SRS field has no template backing | AR — flagged `[UNRESOLVED]` OQ-DN-11 |
-| C5 | SRS §9.4: witness citizenship + "at least two per party" | Template: witnesses carry name/address/age only, 1–3 total; BR-008 unverified | Legal rule vs observed template | AR — flagged OQ-DN-12, BR-008 |
+| C5 | ~~SRS §9.4: witness citizenship + "at least two per party"~~ | Template: name/address/age, 1–3 slots | **RESOLVED 2026-08-13** — BR-008 updated (min 1 per party, name/age/address, citizenship optional); SRS aligned | ~~OQ-DN-12~~ |
 | C6 | SRS §9.5: deposit + utility responsibilities as rental terms | Template: no deposit field; utilities are clause-level (C06) | Deposit not template-backed | AR — flagged OQ-DN-13 |
 | C7 | SRS §9.4: citizenship as party information | Data Needs §7.1: citizenship Optional/PROPOSED | Mandatory-ness authority ambiguous | AR-002 (CRITICAL) tie-in |
 | C8 | NFR-PRI-002: avoid unnecessary retention | BR-040/Decision 004: retain indefinitely | No policy reconciles the two | AR-006 (HIGH) tie-in |
-| C9 | SRS §21: FR+NFR counts (FR-001..049, 13 NFR) | FR doc: FR-LR-001..065; NFR doc: 26 NFRs | Two ID schemes and count bases in live use | — (note only) |
+| C9 | SRS §21: FR+NFR counts (FR-001..049, 13 NFR) | FR doc: FR-LR-001..065; NFR doc: 25 NFRs | Two ID schemes and count bases in live use | — (note only) |
 
 **Result:** 3 contradictions are self-flagged by the artifacts (C4–C6) and 6 are found by this review (C1–C3, C7–C9). The three artifact-vs-artifact contradictions (C1–C3) are the ones that must be fixed at baseline because they describe the MVP differently.
 
@@ -771,7 +772,7 @@ Consolidated list of values and groups with no clean requirement home at baselin
 | D1 | FR-LR-044 (missing info at review) | FR-LR-030 (missing info at generation) | AR-031 |
 | D2 | FR-LR-040 (retrieval) | FR-LR-048 (deny unauthorized) | AR-032 |
 | D3 | FR-LR-042 (audit events) | NFR-AUD-001 (logging capability) | AR-033 |
-| D4 | NFR-PRI-003 (transfer, privacy) | NFR-SEC-004 (transfer, security) | AR-034 |
+| D4 | NFR-PRI-003 (transfer, privacy) | NFR-SEC-004 (transfer, security) | AR-034 — **RESOLVED 2026-08-13** (merged) |
 | D5 | DN-DOC-05 (template identity/version) | DN-GEN-04 (template identity/version) | AR-035 |
 | D6 | FR-LR-035 / FR-LR-062 / FR-LR-063 (document-type distinction) | — | overlapping trio |
 | D7 | FR-LR-036 (finalization metadata) / DN-DOC-06 / DN-GEN-03 | — | same metadata in 3 places |
@@ -829,7 +830,7 @@ Beyond the ~100 questions the artifacts already record, this review surfaced the
 |---|---|---|
 | Q1 | When a manually-entered value conflicts with a source document, which wins by default, and who decides? | AR-025 (OCR-006 covers only OCR) |
 | Q2 | Are amount figures stored canonically in Latin or Devanagari numerals? | AR-030 |
-| Q3 | Does the system retain a copy of the *executed* (signed/notarized) document, or only the generated Finalized System Record? | AR-007 |
+| Q3 | Does the system retain a copy of the *executed* (signed/notarized) document, or only the generated Finalized Document? | AR-007 |
 | Q4 | What exactly is the audit event catalog? | AR-024 |
 | Q5 | What happens to in-flight cases and open drafts when a template version is superseded? | AR-014 |
 | Q6 | Is single-operator-per-case enforced, or merely assumed? | AR-016 |
@@ -864,7 +865,7 @@ The owner should resolve these in dependency order, not alphabetical order. Each
 2. **Document-completeness rule** (AR-002 + AR-003): define mandatory-vs-optional per field for *finalization*; define partial-draft policy and blank-placeholder rule; resolve the §6.3 vs §7.2 contradiction. This is a domain-expert decision.
 3. **Financial validation** (AR-004 + AR-017): validate BR-024..026 and escalation-period semantics against complete instances with a domain expert.
 4. **Words/figures integrity** (AR-005 + AR-021): decide the draft-edit model and calculated-field protection.
-5. **Legal-rule decisions** (AR-009, BR-008 witness rule, AR-013 notice units, AR-018 joint tenancy): legal-expert confirmation for conditional clauses, witness counts, and party multiplicity.
+5. **Legal-rule decisions** (AR-009, BR-008 witness rule, AR-013 notice units, AR-018 joint tenancy): legal-expert confirmation for conditional clauses, witness counts, and party multiplicity. *(BR-008 witness rule updated 2026-08-13 per project owner: min 1 per party, name/age/address, citizenship optional — legal confirmation still pending.)*
 6. **Execution + output contract** (AR-007 + AR-008): signature method, output format, print layout, executed-copy retention.
 7. **Retention/archival/backup/deletion policy** (AR-006 + AR-022 + AR-024): one policy decision covering every artifact class; feeds NFR-BAC/PRI.
 8. **Client/Case model decisions** (AR-010, AR-011, AR-028): post-finalization Client updates, source-doc association level, no-document person representation.
